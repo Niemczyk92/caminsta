@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Caminsta — Intelligent IT. Custom Software. Limitless Scale.</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{--black:#020617;--cyan:#22d3ee;--cyan-dim:rgba(34,211,238,0.12);--cyan-glow:rgba(34,211,238,0.35);--slate:#94a3b8;--slate-light:#cbd5e1;--white:#f8fafc;--glass-border:rgba(34,211,238,0.18);--card-bg:rgba(15,23,42,0.75);--font:'Plus Jakarta Sans',sans-serif;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font);background:var(--black);color:var(--white);overflow-x:hidden;cursor:none;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--black);}::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:2px;}
+#cursor{position:fixed;top:0;left:0;width:12px;height:12px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;mix-blend-mode:screen;}
+#cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1.5px solid var(--cyan);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.5;}
+#neural-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:.5;pointer-events:none;}
+nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:0 5%;height:72px;display:flex;align-items:center;justify-content:space-between;background:rgba(2,6,23,.65);backdrop-filter:blur(18px) saturate(1.4);border-bottom:1px solid var(--glass-border);transition:background .3s,height .3s;}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-logo-text{font-size:1.35rem;font-weight:800;letter-spacing:-.02em;background:linear-gradient(135deg,#fff 30%,var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-links{display:flex;gap:34px;list-style:none;}
+.nav-links a{color:var(--slate-light);text-decoration:none;font-size:.875rem;font-weight:500;transition:color .2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1.5px;background:var(--cyan);transition:width .25s;}
+.nav-links a:hover{color:var(--white);}.nav-links a:hover::after{width:100%;}
+.nav-cta{background:transparent;border:1.5px solid var(--cyan);color:var(--cyan);padding:9px 22px;border-radius:6px;font-family:var(--font);font-size:.8rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:none;position:relative;overflow:hidden;transition:color .25s;}
+.nav-cta::before{content:'';position:absolute;inset:0;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform .28s;z-index:0;}
+.nav-cta:hover::before{transform:scaleX(1);}.nav-cta:hover{color:var(--black);}
+.nav-cta span{position:relative;z-index:1;}
+.pulse-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--cyan);margin-right:7px;animation:pulse 1.8s infinite;vertical-align:middle;position:relative;top:-1px;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 var(--cyan-glow);}50%{box-shadow:0 0 0 7px rgba(34,211,238,0);}}
+.nav-mobile-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:4px;cursor:none;}
+.nav-mobile-toggle span{display:block;width:24px;height:2px;background:var(--slate-light);border-radius:2px;}
+.nav-mobile-menu{display:none;position:fixed;top:72px;left:0;width:100%;background:rgba(2,6,23,.97);backdrop-filter:blur(20px);padding:24px 5% 32px;z-index:999;border-bottom:1px solid var(--glass-border);flex-direction:column;gap:20px;}
+.nav-mobile-menu.open{display:flex;}
+.nav-mobile-menu a{color:var(--slate-light);text-decoration:none;font-size:1.05rem;font-weight:600;padding:8px 0;border-bottom:1px solid var(--glass-border);}
+section{position:relative;z-index:1;}
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:140px 5% 80px;overflow:hidden;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--cyan-dim);border:1px solid var(--glass-border);border-radius:100px;padding:6px 16px;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--cyan);margin-bottom:32px;opacity:0;transform:translateY(20px);animation:fadeUp .7s .3s forwards;}
+.hero-title{font-size:clamp(2.6rem,6vw,5.5rem);font-weight:800;line-height:1.08;letter-spacing:-.03em;max-width:900px;opacity:0;transform:translateY(30px);animation:fadeUp .8s .5s forwards;}
+.hero-title .accent{color:var(--cyan);}
+.hero-subtitle{max-width:640px;margin:28px auto 0;font-size:clamp(1rem,1.8vw,1.15rem);color:var(--slate);line-height:1.7;opacity:0;transform:translateY(30px);animation:fadeUp .8s .7s forwards;}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:44px;opacity:0;transform:translateY(30px);animation:fadeUp .8s .9s forwards;}
+.hero-glow{position:absolute;width:700px;height:700px;background:radial-gradient(circle,rgba(34,211,238,.07) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+.hero-scroll-hint{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--slate);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;opacity:0;animation:fadeUp 1s 1.4s forwards;}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--slate),transparent);animation:scrollLine 2s infinite;}
+@keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}51%{transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+.btn-primary{padding:14px 34px;border-radius:8px;background:var(--cyan);color:var(--black);font-family:var(--font);font-weight:700;font-size:.9rem;border:none;cursor:none;transition:box-shadow .25s,transform .2s;}
+.btn-primary:hover{box-shadow:0 8px 32px var(--cyan-glow),0 0 0 4px rgba(34,211,238,.15);transform:translateY(-2px);}
+.btn-secondary{padding:14px 34px;border-radius:8px;background:transparent;border:1.5px solid rgba(148,163,184,.35);color:var(--slate-light);font-family:var(--font);font-weight:600;font-size:.9rem;cursor:none;transition:border-color .25s,color .25s,transform .2s;}
+.btn-secondary:hover{border-color:var(--cyan);color:var(--white);transform:translateY(-2px);}
+.section-label{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--cyan);margin-bottom:16px;}
+.section-title{font-size:clamp(2rem,4vw,3.2rem);font-weight:800;line-height:1.1;letter-spacing:-.025em;}
+.section-subtitle{color:var(--slate);font-size:1.05rem;line-height:1.7;max-width:580px;margin-top:16px;}
+#services{padding:120px 5%;}
+.services-header{text-align:center;margin-bottom:70px;}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:1200px;margin:0 auto;}
+.service-card{background:var(--card-bg);border:1px solid var(--glass-border);border-radius:16px;padding:36px 32px;position:relative;overflow:hidden;cursor:none;transition:border-color .3s,box-shadow .3s;backdrop-filter:blur(10px);transform-style:preserve-3d;}
+.service-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(34,211,238,.05) 0%,transparent 60%);opacity:0;transition:opacity .3s;border-radius:16px;}
+.service-card:hover::before{opacity:1;}
+.service-card:hover{border-color:rgba(34,211,238,.5);box-shadow:0 24px 60px rgba(0,0,0,.4),0 0 40px rgba(34,211,238,.08);}
+.card-glow-cursor{position:absolute;width:140px;height:140px;background:radial-gradient(circle,rgba(34,211,238,.18) 0%,transparent 70%);border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);opacity:0;transition:opacity .3s;}
+.service-card:hover .card-glow-cursor{opacity:1;}
+.service-icon{width:52px;height:52px;margin-bottom:24px;position:relative;}
+.service-name{font-size:1.15rem;font-weight:700;margin-bottom:12px;}
+.service-desc{font-size:.875rem;color:var(--slate);line-height:1.7;margin-bottom:24px;}
+.service-expand-btn{background:none;border:none;font-family:var(--font);color:var(--cyan);font-size:.8rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;cursor:none;display:flex;align-items:center;gap:6px;padding:0;transition:gap .2s;}
+.service-expand-btn:hover{gap:10px;}
+.service-expand-btn svg{transition:transform .25s;}
+.service-details{overflow:hidden;max-height:0;transition:max-height .45s cubic-bezier(.4,0,.2,1),opacity .3s;opacity:0;}
+.service-details.open{max-height:420px;opacity:1;}
+.service-details-inner{padding-top:20px;border-top:1px solid var(--glass-border);margin-top:20px;}
+.service-details-inner ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.service-details-inner li{font-size:.83rem;color:var(--slate-light);display:flex;align-items:flex-start;gap:10px;line-height:1.5;}
+.service-details-inner li::before{content:'';flex-shrink:0;width:5px;height:5px;border-radius:50%;background:var(--cyan);margin-top:6px;}
+.detail-cta{display:inline-flex;align-items:center;gap:6px;margin-top:18px;padding:9px 20px;border:1.5px solid var(--cyan);border-radius:6px;color:var(--cyan);font-family:var(--font);font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:none;cursor:none;transition:background .25s,color .25s;}
+.detail-cta:hover{background:var(--cyan);color:var(--black);}
+.icon-radar{display:flex;align-items:center;justify-content:center;width:52px;height:52px;}
+.radar-ring{position:absolute;border:1.5px solid var(--cyan);border-radius:50%;animation:radarPulse 2.4s infinite;opacity:0;}
+.radar-ring:nth-child(1){width:14px;height:14px;animation-delay:0s;}.radar-ring:nth-child(2){width:26px;height:26px;animation-delay:.4s;}.radar-ring:nth-child(3){width:40px;height:40px;animation-delay:.8s;}.radar-ring:nth-child(4){width:52px;height:52px;animation-delay:1.2s;}
+.radar-center{width:6px;height:6px;border-radius:50%;background:var(--cyan);position:absolute;}
+@keyframes radarPulse{0%{transform:scale(.3);opacity:.8;}100%{transform:scale(1);opacity:0;}}
+.gear-svg{animation:spin 5s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.bracket-left{animation:bracketLeft 2s ease-in-out infinite alternate;}.bracket-right{animation:bracketRight 2s ease-in-out infinite alternate;}
+@keyframes bracketLeft{from{transform:translateX(0);}to{transform:translateX(-4px);}}@keyframes bracketRight{from{transform:translateX(0);}to{transform:translateX(4px);}}
+.consult-diamond{animation:diamondPulse 2.5s ease-in-out infinite;}
+@keyframes diamondPulse{0%,100%{opacity:.6;}50%{opacity:1;}}
+#stats{padding:60px 5%;border-top:1px solid var(--glass-border);border-bottom:1px solid var(--glass-border);}
+.stats-inner{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:40px;text-align:center;}
+.stat-num{font-size:2.8rem;font-weight:800;letter-spacing:-.04em;background:linear-gradient(135deg,var(--white) 30%,var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;}
+.stat-label{font-size:.8rem;color:var(--slate);font-weight:500;margin-top:8px;letter-spacing:.04em;text-transform:uppercase;}
+#advantage{padding:120px 5%;background:linear-gradient(180deg,transparent,rgba(34,211,238,.025) 50%,transparent);}
+.advantage-inner{max-width:1200px;margin:0 auto;}
+.advantage-header{margin-bottom:70px;}
+.advantage-features{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;}
+.adv-feature{padding:48px 40px;border-right:1px solid var(--glass-border);}
+.adv-feature:last-of-type{border-right:none;}
+.adv-number{font-size:.7rem;font-weight:700;color:var(--cyan);letter-spacing:.15em;text-transform:uppercase;margin-bottom:20px;opacity:.7;}
+.adv-icon{width:44px;height:44px;margin-bottom:20px;}
+.adv-title{font-size:1.25rem;font-weight:700;margin-bottom:14px;}
+.adv-text{color:var(--slate);font-size:.875rem;line-height:1.75;}
+.tech-grid-wrap{grid-column:1/-1;margin-top:56px;border:1px solid var(--glass-border);border-radius:20px;background:var(--card-bg);backdrop-filter:blur(10px);padding:44px;display:flex;flex-direction:column;align-items:center;gap:24px;}
+.tech-section-label{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--cyan);}
+.tech-grid{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+.tech-pill{padding:9px 20px;border-radius:100px;border:1px solid var(--glass-border);background:rgba(15,23,42,.8);font-size:.8rem;font-weight:600;color:var(--slate-light);transition:border-color .25s,color .25s,transform .25s,box-shadow .25s;}
+.tech-pill:hover{border-color:var(--cyan);color:var(--white);transform:translateY(-3px);box-shadow:0 8px 20px rgba(34,211,238,.12);}
+#process{padding:120px 5%;}
+.process-inner{max-width:1100px;margin:0 auto;}
+.process-header{text-align:center;margin-bottom:70px;}
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
+.process-steps::before{content:'';position:absolute;top:28px;left:12%;right:12%;height:1px;background:linear-gradient(to right,transparent,var(--glass-border) 20%,var(--glass-border) 80%,transparent);}
+.process-step{padding:0 20px;text-align:center;}
+.step-num{width:56px;height:56px;border-radius:50%;border:1.5px solid var(--glass-border);background:var(--card-bg);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;color:var(--cyan);margin:0 auto 24px;position:relative;z-index:1;transition:border-color .3s,box-shadow .3s;}
+.process-step:hover .step-num{border-color:var(--cyan);box-shadow:0 0 20px var(--cyan-dim);}
+.step-title{font-size:1rem;font-weight:700;margin-bottom:10px;}.step-text{font-size:.83rem;color:var(--slate);line-height:1.6;}
+#cta-banner{padding:120px 5%;}
+.cta-inner{max-width:900px;margin:0 auto;background:var(--card-bg);border:1px solid var(--glass-border);border-radius:24px;padding:80px 60px;text-align:center;position:relative;overflow:hidden;backdrop-filter:blur(12px);}
+.cta-glow{position:absolute;inset:-60px;background:radial-gradient(ellipse at 50% 0%,rgba(34,211,238,.12) 0%,transparent 65%);pointer-events:none;}
+.cta-title{font-size:clamp(1.8rem,4vw,3rem);font-weight:800;letter-spacing:-.025em;line-height:1.1;margin-bottom:20px;position:relative;z-index:1;}
+.cta-sub{color:var(--slate);font-size:1.05rem;line-height:1.7;margin-bottom:44px;position:relative;z-index:1;}
+.cta-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;}
+footer{padding:60px 5% 40px;border-top:1px solid var(--glass-border);position:relative;z-index:1;}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:40px;}
+.footer-brand{display:flex;flex-direction:column;gap:12px;max-width:300px;}
+.footer-tagline{font-size:.82rem;color:var(--slate);line-height:1.65;}
+.footer-col h4{font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:18px;}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-col ul a{color:var(--slate);text-decoration:none;font-size:.85rem;transition:color .2s;cursor:none;}
+.footer-col ul a:hover{color:var(--white);}
+.footer-socials{display:flex;gap:12px;margin-top:4px;}
+.social-btn{width:38px;height:38px;border-radius:8px;border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;cursor:none;transition:border-color .25s,box-shadow .25s,transform .2s;background:rgba(15,23,42,.5);}
+.social-btn:hover{border-color:var(--cyan);box-shadow:0 0 16px var(--cyan-dim);transform:translateY(-3px);}
+.social-btn svg{width:16px;height:16px;fill:var(--slate);transition:fill .2s;}.social-btn:hover svg{fill:var(--cyan);}
+.footer-bottom{width:100%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:40px;padding-top:24px;border-top:1px solid rgba(34,211,238,.07);}
+.footer-copy{font-size:.75rem;color:rgba(148,163,184,.45);}
+.footer-legal{display:flex;gap:20px;}
+.footer-legal a{font-size:.75rem;color:rgba(148,163,184,.45);text-decoration:none;transition:color .2s;cursor:none;}
+.footer-legal a:hover{color:var(--slate);}
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .7s cubic-bezier(.4,0,.2,1),transform .7s cubic-bezier(.4,0,.2,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-delay-1{transition-delay:.1s;}.reveal-delay-2{transition-delay:.2s;}.reveal-delay-3{transition-delay:.3s;}.reveal-delay-4{transition-delay:.4s;}
+
+/* ══ MODALS ══ */
+.modal-overlay{position:fixed;inset:0;z-index:5000;background:rgba(2,6,23,.88);backdrop-filter:blur(14px);display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:#081020;border:1px solid var(--glass-border);border-radius:20px;width:100%;max-width:760px;max-height:88vh;overflow-y:auto;position:relative;padding:48px 52px;}
+.modal-box::-webkit-scrollbar{width:3px;}.modal-box::-webkit-scrollbar-thumb{background:var(--cyan);}
+.modal-close{position:absolute;top:20px;right:24px;background:none;border:none;color:var(--slate);font-size:1.8rem;cursor:none;line-height:1;transition:color .2s;}.modal-close:hover{color:var(--white);}
+.modal-service-badge{display:inline-flex;align-items:center;gap:8px;background:var(--cyan-dim);border:1px solid var(--glass-border);border-radius:100px;padding:5px 14px;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:20px;}
+.modal-title{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;letter-spacing:-.025em;line-height:1.15;margin-bottom:16px;}
+.modal-intro{color:var(--slate);font-size:.95rem;line-height:1.75;margin-bottom:32px;}
+.modal-section-title{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--cyan);margin-bottom:16px;margin-top:32px;}
+.modal-list{list-style:none;display:flex;flex-direction:column;gap:13px;}
+.modal-list li{display:flex;gap:14px;font-size:.9rem;color:var(--slate-light);line-height:1.6;}
+.modal-list li::before{content:'';flex-shrink:0;width:6px;height:6px;border-radius:50%;background:var(--cyan);margin-top:8px;}
+.modal-two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:8px;}
+.modal-two-col .modal-list li{font-size:.82rem;}
+.modal-cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:40px;padding-top:28px;border-top:1px solid var(--glass-border);}
+
+/* ══ AUDIT WIZARD ══ */
+.audit-overlay{position:fixed;inset:0;z-index:6000;background:rgba(2,6,23,.92);backdrop-filter:blur(18px);display:none;align-items:center;justify-content:center;padding:16px;}
+.audit-overlay.open{display:flex;}
+.audit-box{background:#060f1d;border:1px solid var(--glass-border);border-radius:24px;width:100%;max-width:680px;max-height:94vh;overflow-y:auto;position:relative;}
+.audit-box::-webkit-scrollbar{width:3px;}.audit-box::-webkit-scrollbar-thumb{background:var(--cyan);}
+.audit-header{padding:36px 44px 24px;border-bottom:1px solid var(--glass-border);}
+.audit-close{position:absolute;top:18px;right:22px;background:none;border:none;color:var(--slate);font-size:1.8rem;cursor:none;transition:color .2s;line-height:1;}.audit-close:hover{color:var(--white);}
+.audit-title{font-size:1.6rem;font-weight:800;letter-spacing:-.025em;margin-bottom:6px;}
+.audit-subtitle{color:var(--slate);font-size:.88rem;line-height:1.6;}
+.audit-progress{padding:20px 44px 0;}
+.progress-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.progress-label{font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--slate);}
+.progress-count{font-size:.72rem;font-weight:700;color:var(--cyan);}
+.progress-track{height:3px;background:rgba(148,163,184,.15);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--cyan),#38bdf8);border-radius:2px;transition:width .4s cubic-bezier(.4,0,.2,1);}
+.audit-steps{padding:28px 44px 36px;}
+.audit-step{display:none;}.audit-step.active{display:block;}
+.step-q{font-size:1.1rem;font-weight:700;line-height:1.4;margin-bottom:8px;}
+.step-hint{font-size:.82rem;color:var(--slate);margin-bottom:22px;line-height:1.5;}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px;}
+.option-btn{background:rgba(15,23,42,.7);border:1.5px solid var(--glass-border);border-radius:10px;padding:14px 18px;text-align:left;cursor:none;transition:border-color .2s,background .2s;display:flex;align-items:flex-start;gap:12px;}
+.option-btn:hover{border-color:rgba(34,211,238,.4);background:rgba(34,211,238,.05);}
+.option-btn.selected{border-color:var(--cyan);background:rgba(34,211,238,.1);}
+.option-icon{font-size:1.3rem;line-height:1;flex-shrink:0;margin-top:1px;}
+.option-text{display:flex;flex-direction:column;gap:3px;}
+.option-label{font-size:.88rem;font-weight:600;color:var(--white);}
+.option-sub{font-size:.75rem;color:var(--slate);line-height:1.4;}
+.audit-input{width:100%;background:rgba(15,23,42,.7);border:1.5px solid var(--glass-border);border-radius:10px;padding:14px 18px;font-family:var(--font);font-size:.9rem;color:var(--white);outline:none;transition:border-color .2s;margin-bottom:4px;resize:none;}
+.audit-input:focus{border-color:var(--cyan);}.audit-input::placeholder{color:var(--slate);}
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.input-label{font-size:.78rem;font-weight:600;color:var(--slate);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px;display:block;}
+.slider-wrap{margin-bottom:4px;}
+.range-input{width:100%;accent-color:var(--cyan);cursor:none;}
+.range-labels{display:flex;justify-content:space-between;font-size:.68rem;color:var(--slate);margin-top:8px;}
+.audit-nav{display:flex;justify-content:space-between;align-items:center;margin-top:28px;}
+.audit-nav-prev{background:none;border:1.5px solid var(--glass-border);border-radius:8px;padding:10px 24px;font-family:var(--font);font-size:.85rem;font-weight:600;color:var(--slate);cursor:none;transition:border-color .2s,color .2s;}
+.audit-nav-prev:hover{border-color:var(--slate);color:var(--white);}
+.audit-nav-next{padding:11px 30px;border-radius:8px;background:var(--cyan);color:var(--black);font-family:var(--font);font-weight:700;font-size:.88rem;border:none;cursor:none;transition:box-shadow .25s,transform .15s;}
+.audit-nav-next:hover{box-shadow:0 6px 24px var(--cyan-glow);transform:translateY(-1px);}
+.audit-nav-next:disabled{opacity:.35;pointer-events:none;}
+#audit-results{display:none;padding:36px 44px;}
+.results-header{margin-bottom:28px;}
+.results-score-wrap{display:flex;align-items:center;gap:28px;margin-bottom:28px;padding:28px;background:rgba(34,211,238,.05);border:1px solid var(--glass-border);border-radius:14px;}
+.score-circle{flex-shrink:0;width:96px;height:96px;position:relative;}
+.score-circle svg{transform:rotate(-90deg);}
+.score-val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.score-num{font-size:1.7rem;font-weight:800;color:var(--white);line-height:1;}
+.score-max{font-size:.65rem;color:var(--slate);font-weight:500;}
+.score-info{flex:1;}
+.score-title{font-size:1.15rem;font-weight:700;margin-bottom:6px;}
+.score-desc{font-size:.85rem;color:var(--slate);line-height:1.6;}
+.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
+.result-card{padding:18px 20px;border-radius:12px;border:1px solid var(--glass-border);}
+.result-card.critical{border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.06);}
+.result-card.warning{border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.06);}
+.result-card.good{border-color:rgba(34,197,94,.35);background:rgba(34,197,94,.05);}
+.result-card.info{border-color:var(--glass-border);background:rgba(34,211,238,.04);}
+.rc-icon{font-size:1.3rem;margin-bottom:8px;}
+.rc-title{font-size:.83rem;font-weight:700;margin-bottom:5px;}
+.rc-text{font-size:.78rem;color:var(--slate);line-height:1.5;}
+.results-cta{padding:28px;background:linear-gradient(135deg,rgba(34,211,238,.08),rgba(56,189,248,.04));border:1px solid var(--glass-border);border-radius:14px;text-align:center;}
+.results-cta-title{font-size:1.1rem;font-weight:700;margin-bottom:8px;}
+.results-cta-sub{font-size:.85rem;color:var(--slate);margin-bottom:20px;line-height:1.55;}
+
+@media(max-width:900px){
+  .nav-links,.nav-cta{display:none;}.nav-mobile-toggle{display:flex;}
+  .advantage-features{grid-template-columns:1fr;}
+  .adv-feature{border-right:none;border-bottom:1px solid var(--glass-border);}
+  .stats-inner{grid-template-columns:1fr 1fr;}
+  .cta-inner{padding:50px 32px;}
+  .modal-box{padding:36px 28px;}
+  .audit-header{padding:28px 28px 20px;}
+  .audit-progress,.audit-steps{padding-left:28px;padding-right:28px;}
+  .process-steps{grid-template-columns:1fr 1fr;gap:32px;}
+  .process-steps::before{display:none;}
+  .modal-two-col{grid-template-columns:1fr;}
+  #audit-results{padding:24px 28px;}
+  .results-grid{grid-template-columns:1fr;}
+  .results-score-wrap{flex-direction:column;text-align:center;}
+}
+@media(max-width:600px){
+  .services-grid{grid-template-columns:1fr;}
+  .hero-actions{flex-direction:column;align-items:center;}
+  .btn-primary,.btn-secondary{width:260px;text-align:center;}
+  .footer-inner{flex-direction:column;}
+  .options-grid{grid-template-columns:1fr;}
+  .input-row{grid-template-columns:1fr;}
+  .audit-nav{flex-direction:column-reverse;gap:10px;}
+  .audit-nav-prev,.audit-nav-next{width:100%;text-align:center;}
+  .process-steps{grid-template-columns:1fr;}
+  .advantage-features{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="neural-canvas"></canvas>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <svg width="36" height="36" viewBox="0 0 38 38" fill="none">
+      <circle cx="19" cy="19" r="17" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="4 3" opacity=".3"/>
+      <path d="M29 11.5C26.5 9 23.2 7.5 19.5 7.5C12.3 7.5 6.5 13.3 6.5 20.5C6.5 27.7 12.3 33.5 19.5 33.5C23.2 33.5 26.5 32 29 29.5" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <circle cx="29" cy="11.5" r="2.5" fill="#22d3ee"/><circle cx="29" cy="29.5" r="2.5" fill="#22d3ee"/>
+      <circle cx="6.5" cy="20.5" r="2" fill="#22d3ee" opacity=".6"/>
+    </svg>
+    <span class="nav-logo-text">Caminsta</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#advantage">Solutions</a></li>
+    <li><a href="#process">How We Work</a></li>
+    <li><a href="#stats">About</a></li>
+    <li><a href="#cta-banner">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="openAudit()"><span class="pulse-dot"></span><span>Get a Free IT Audit</span></button>
+  <button class="nav-mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-mobile-menu" id="mobileMenu">
+  <a href="#services" onclick="closeMobile()">Services</a>
+  <a href="#advantage" onclick="closeMobile()">Solutions</a>
+  <a href="#process" onclick="closeMobile()">How We Work</a>
+  <a href="#stats" onclick="closeMobile()">About</a>
+  <a href="#cta-banner" onclick="closeMobile()">Contact</a>
+  <button class="nav-cta" style="width:100%;text-align:center;cursor:pointer" onclick="closeMobile();openAudit()">
+    <span class="pulse-dot"></span><span>Free IT Audit</span>
+  </button>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-badge"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3.5" fill="#22d3ee"/></svg>AI-Powered IT Solutions</div>
+  <h1 class="hero-title">Intelligent IT.<br>Custom Software.<br><span class="accent">Limitless Scale.</span></h1>
+  <p class="hero-subtitle">Empowering modern enterprises with proactive Managed IT Services, AI-driven automation, and high-performance web &amp; mobile applications.</p>
+  <div class="hero-actions">
+    <button class="btn-primary" onclick="openAudit()">Start Your Transformation</button>
+    <button class="btn-secondary" onclick="document.getElementById('advantage').scrollIntoView({behavior:'smooth'})">View Our Tech Stack</button>
+  </div>
+  <div class="hero-scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-header reveal">
+    <div class="section-label">What We Build</div>
+    <h2 class="section-title">Engineering Your<br>Digital Infrastructure</h2>
+    <p class="section-subtitle" style="margin:16px auto 0">Four disciplines. One focused team. Infinite possibilities for your enterprise.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal reveal-delay-1" data-tilt>
+      <div class="card-glow-cursor"></div>
+      <div class="service-icon"><div class="icon-radar"><div class="radar-ring"></div><div class="radar-ring"></div><div class="radar-ring"></div><div class="radar-ring"></div><div class="radar-center"></div></div></div>
+      <div class="service-name">MSP &amp; Security</div>
+      <p class="service-desc">Proactive monitoring, MDR, and endpoint protection. We secure your network and eliminate downtime before it starts.</p>
+      <button class="service-expand-btn" onclick="toggleCard(this)">Learn More <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4L6 8L10 4" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      <div class="service-details"><div class="service-details-inner"><ul>
+        <li>24/7 Managed Detection &amp; Response (MDR) with sub-15-minute incident response SLA</li>
+        <li>Endpoint protection across all devices — laptops, servers, and mobile using CrowdStrike or SentinelOne</li>
+        <li>Zero-trust network architecture design and implementation</li>
+        <li>Vulnerability scanning, patch management, and quarterly hardening audits</li>
+        <li>Compliance frameworks: SOC 2, HIPAA, PCI-DSS, and NIST CSF</li>
+        <li>Email security, phishing simulation, and employee security awareness training</li>
+        <li>Disaster recovery planning and backup integrity testing every quarter</li>
+      </ul><button class="detail-cta" onclick="openModal('msp')">Full Service Details →</button></div></div>
+    </div>
+    <div class="service-card reveal reveal-delay-2" data-tilt>
+      <div class="card-glow-cursor"></div>
+      <div class="service-icon"><div style="display:flex;align-items:center;justify-content:center;width:52px;height:52px;"><svg width="52" height="52" viewBox="0 0 52 52" fill="none"><g class="bracket-left"><path d="M20 14L10 26L20 38" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></g><g class="bracket-right"><path d="M32 14L42 26L32 38" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></g><line x1="26" y1="16" x2="26" y2="36" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="3 3" opacity=".5"/></svg></div></div>
+      <div class="service-name">Web &amp; Mobile Apps</div>
+      <p class="service-desc">Tailor-made solutions — from internal PTO trackers to complex mobile platforms. Built on high-performance PHP/MySQL and React Native.</p>
+      <button class="service-expand-btn" onclick="toggleCard(this)">Learn More <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4L6 8L10 4" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      <div class="service-details"><div class="service-details-inner"><ul>
+        <li>Full-stack web apps: React / Next.js frontend paired with PHP or Node.js backends and MySQL/PostgreSQL</li>
+        <li>React Native mobile apps for iOS and Android — single codebase, native performance and feel</li>
+        <li>Internal business tools: PTO systems, approval workflows, inventory dashboards, HR portals</li>
+        <li>API-first design with RESTful and GraphQL architecture built for scale</li>
+        <li>ERP and third-party integrations: Sage 100, QuickBooks, Salesforce, and custom APIs</li>
+        <li>Performance optimization, CDN configuration, and load testing under real traffic conditions</li>
+        <li>Ongoing maintenance plans with defined SLA guarantees and zero-surprise billing</li>
+      </ul><button class="detail-cta" onclick="openModal('webmobile')">Full Service Details →</button></div></div>
+    </div>
+    <div class="service-card reveal reveal-delay-3" data-tilt>
+      <div class="card-glow-cursor"></div>
+      <div class="service-icon"><div style="display:flex;align-items:center;justify-content:center;width:52px;height:52px;"><svg class="gear-svg" width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 16a8 8 0 1 0 0 16 8 8 0 0 0 0-16z" stroke="#22d3ee" stroke-width="2"/><path d="M24 4v4M24 40v4M4 24h4M40 24h4M8.3 8.3l2.8 2.8M36.9 36.9l2.8 2.8M8.3 39.7l2.8-2.8M36.9 11.1l2.8-2.8" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" opacity=".7"/><circle cx="24" cy="24" r="3" fill="#22d3ee" opacity=".8"/></svg></div></div>
+      <div class="service-name">AI &amp; Automation</div>
+      <p class="service-desc">Transform workflows. Integrate intelligent automation and AI ticketing to multiply productivity across your enterprise.</p>
+      <button class="service-expand-btn" onclick="toggleCard(this)">Learn More <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4L6 8L10 4" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      <div class="service-details"><div class="service-details-inner"><ul>
+        <li>AI-powered helpdesk: smart ticket routing, auto-classification, and AI-suggested resolutions reducing L1 volume by 50%+</li>
+        <li>LLM integration into existing tools — document analysis, report generation, internal Q&amp;A knowledge bases</li>
+        <li>RPA (Robotic Process Automation) for data entry, reconciliation, and multi-step approval flows</li>
+        <li>Predictive analytics dashboards pulling from your SQL Server, ERP, or CRM data in real time</li>
+        <li>Custom AI chatbots for internal IT support or customer-facing service interactions</li>
+        <li>Workflow orchestration with n8n, Zapier, or fully custom event-driven pipelines</li>
+        <li>AI model fine-tuning and deployment on your own infrastructure or secure cloud environment</li>
+      </ul><button class="detail-cta" onclick="openModal('ai')">Full Service Details →</button></div></div>
+    </div>
+    <div class="service-card reveal reveal-delay-4" data-tilt>
+      <div class="card-glow-cursor"></div>
+      <div class="service-icon"><div style="display:flex;align-items:center;justify-content:center;width:52px;height:52px;"><svg class="consult-diamond" width="48" height="48" viewBox="0 0 48 48" fill="none"><polygon points="24,4 44,24 24,44 4,24" stroke="#22d3ee" stroke-width="2" fill="none"/><polygon points="24,12 36,24 24,36 12,24" stroke="#22d3ee" stroke-width="1.5" fill="rgba(34,211,238,.06)" opacity=".7"/><circle cx="24" cy="24" r="4" fill="#22d3ee" opacity=".9"/><line x1="24" y1="4" x2="24" y2="12" stroke="#22d3ee" stroke-width="1" opacity=".4"/><line x1="24" y1="36" x2="24" y2="44" stroke="#22d3ee" stroke-width="1" opacity=".4"/><line x1="4" y1="24" x2="12" y2="24" stroke="#22d3ee" stroke-width="1" opacity=".4"/><line x1="36" y1="24" x2="44" y2="24" stroke="#22d3ee" stroke-width="1" opacity=".4"/></svg></div></div>
+      <div class="service-name">Enterprise Consulting</div>
+      <p class="service-desc">Expertise in Sage 100, SQL Server, and system migrations. We optimize your core infrastructure for peak performance.</p>
+      <button class="service-expand-btn" onclick="toggleCard(this)">Learn More <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4L6 8L10 4" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      <div class="service-details"><div class="service-details-inner"><ul>
+        <li>Sage 100 ERP: full implementation, module configuration, data migration, training, and ongoing managed support</li>
+        <li>SQL Server optimization — query tuning, indexing strategies, Always On AG, and HA/DR setup</li>
+        <li>Legacy system modernization: PHP, ASP.NET, Access — migrated to modern maintainable architectures</li>
+        <li>Cloud migration strategy for Azure and AWS — from lift-and-shift to fully cloud-native redesigns</li>
+        <li>Full IT infrastructure auditing: network topology, server health, licensing compliance, backup integrity</li>
+        <li>Virtual CTO (vCTO) advisory: IT roadmapping, vendor negotiation, and board-level technology reporting</li>
+        <li>Business continuity planning, operational resilience assessments, and M&amp;A IT due diligence</li>
+      </ul><button class="detail-cta" onclick="openModal('consulting')">Full Service Details →</button></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="stats-inner">
+    <div class="reveal"><div class="stat-num" data-count="99.9">0</div><div class="stat-label">Uptime SLA %</div></div>
+    <div class="reveal reveal-delay-1"><div class="stat-num" data-count="150">0</div><div class="stat-label">Enterprise Clients</div></div>
+    <div class="reveal reveal-delay-2"><div class="stat-num" data-count="12">0</div><div class="stat-label">Years Experience</div></div>
+    <div class="reveal reveal-delay-3"><div class="stat-num" data-count="24">0</div><div class="stat-label">/ 7 Support Hours</div></div>
+  </div>
+</section>
+
+<!-- ADVANTAGE -->
+<section id="advantage">
+  <div class="advantage-inner">
+    <div class="advantage-header reveal">
+      <div class="section-label">The Caminsta Advantage</div>
+      <h2 class="section-title">Built Different.<br>By Design.</h2>
+      <p class="section-subtitle">Three core principles that separate high-performance IT from everything else.</p>
+    </div>
+    <div class="advantage-features">
+      <div class="adv-feature reveal">
+        <div class="adv-number">01</div>
+        <div class="adv-icon"><svg width="44" height="44" viewBox="0 0 44 44" fill="none"><path d="M22 4L6 10v12c0 9.8 7 18.9 16 21 9-2.1 16-11.2 16-21V10L22 4z" stroke="#22d3ee" stroke-width="1.8" fill="rgba(34,211,238,.05)"/><path d="M15 22l5 5 9-9" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="adv-title">Security-First Architecture</div>
+        <p class="adv-text">Every system we design begins with a threat model. Zero-trust principles, least-privilege access, and layered defenses are built in — never bolted on. Security is not a feature; it's the foundation every decision is built upon.</p>
+      </div>
+      <div class="adv-feature reveal reveal-delay-1">
+        <div class="adv-number">02</div>
+        <div class="adv-icon"><svg width="44" height="44" viewBox="0 0 44 44" fill="none"><rect x="6" y="16" width="12" height="22" rx="2" stroke="#22d3ee" stroke-width="1.8" fill="rgba(34,211,238,.04)"/><rect x="22" y="10" width="12" height="28" rx="2" stroke="#22d3ee" stroke-width="1.8" fill="rgba(34,211,238,.07)"/><rect x="16" y="6" width="6" height="32" rx="1" stroke="#22d3ee" stroke-width="1" fill="rgba(34,211,238,.03)" opacity=".5"/></svg></div>
+        <div class="adv-title">Scalable Dev Stacks</div>
+        <p class="adv-text">From single-server deployments to multi-region cloud architectures, our technology choices are engineered to grow with your ambitions. No technical debt, no re-platforms — just systems that scale cleanly when you need them to.</p>
+      </div>
+      <div class="adv-feature reveal reveal-delay-2">
+        <div class="adv-number">03</div>
+        <div class="adv-icon"><svg width="44" height="44" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="14" r="6" stroke="#22d3ee" stroke-width="1.8" fill="rgba(34,211,238,.05)"/><path d="M10 38c0-6.6 5.4-12 12-12s12 5.4 12 12" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round"/><path d="M32 20l4 4-4 4" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".6"/></svg></div>
+        <div class="adv-title">Bespoke Problem Solving</div>
+        <p class="adv-text">No templates. No off-the-shelf patches. We embed with your team, understand every nuance, and engineer solutions precisely for your context. The result: software and infrastructure that fits perfectly — because it was built for you alone.</p>
+      </div>
+      <div class="tech-grid-wrap reveal">
+        <p class="tech-section-label">Our Technology Stack</p>
+        <div class="tech-grid">
+          <span class="tech-pill">React / Next.js</span><span class="tech-pill">React Native</span><span class="tech-pill">PHP / MySQL</span><span class="tech-pill">Node.js</span><span class="tech-pill">Azure / AWS</span><span class="tech-pill">SQL Server</span><span class="tech-pill">Sage 100 ERP</span><span class="tech-pill">Python / AI</span><span class="tech-pill">Docker / Kubernetes</span><span class="tech-pill">Tailwind CSS</span><span class="tech-pill">MDR / EDR / SIEM</span><span class="tech-pill">Zero Trust</span><span class="tech-pill">n8n / Zapier RPA</span><span class="tech-pill">GraphQL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="process-inner">
+    <div class="process-header reveal">
+      <div class="section-label">How We Work</div>
+      <h2 class="section-title">From Discovery<br>to Deployment</h2>
+      <p class="section-subtitle" style="margin:16px auto 0">A structured, transparent engagement model designed to move fast without cutting corners.</p>
+    </div>
+    <div class="process-steps">
+      <div class="process-step reveal"><div class="step-num">01</div><div class="step-title">Discovery &amp; Audit</div><p class="step-text">A deep-dive into your current infrastructure, workflows, and pain points. No assumptions — only data. Your free IT audit is where every engagement begins.</p></div>
+      <div class="process-step reveal reveal-delay-1"><div class="step-num">02</div><div class="step-title">Strategy &amp; Roadmap</div><p class="step-text">We deliver a prioritized roadmap with clear ROI projections. Security gaps, automation opportunities, and software requirements are all mapped and phased.</p></div>
+      <div class="process-step reveal reveal-delay-2"><div class="step-num">03</div><div class="step-title">Build &amp; Integrate</div><p class="step-text">Engineers execute in focused sprints. Weekly check-ins, transparent progress tracking, and zero surprise invoices. We build for the long term, not the demo.</p></div>
+      <div class="process-step reveal reveal-delay-3"><div class="step-num">04</div><div class="step-title">Monitor &amp; Optimize</div><p class="step-text">Post-deployment, our team provides continuous monitoring, proactive alerting, and monthly performance reviews. We treat your systems as our own indefinitely.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta-banner">
+  <div class="cta-inner reveal">
+    <div class="cta-glow"></div>
+    <div class="section-label">Ready to Transform?</div>
+    <h2 class="cta-title">Your IT Should Work <span style="color:var(--cyan)">For You</span>,<br>Not Against You.</h2>
+    <p class="cta-sub">Get a comprehensive, no-obligation IT audit and discover exactly where your infrastructure can be strengthened, automated, and scaled. Takes 3 minutes. Insights are instant.</p>
+    <div class="cta-actions">
+      <button class="btn-primary" onclick="openAudit()">Start Your Free Audit</button>
+      <button class="btn-secondary" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">Explore Services</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">
+        <svg width="30" height="30" viewBox="0 0 38 38" fill="none"><circle cx="19" cy="19" r="17" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="4 3" opacity=".3"/><path d="M29 11.5C26.5 9 23.2 7.5 19.5 7.5C12.3 7.5 6.5 13.3 6.5 20.5C6.5 27.7 12.3 33.5 19.5 33.5C23.2 33.5 26.5 32 29 29.5" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round" fill="none"/><circle cx="29" cy="11.5" r="2.5" fill="#22d3ee"/><circle cx="29" cy="29.5" r="2.5" fill="#22d3ee"/></svg>
+        <span class="nav-logo-text">Caminsta</span>
+      </a>
+      <p class="footer-tagline">Caminsta delivers ultra-modern IT solutions, custom software, and AI automation for enterprises that demand the best. Intelligent IT. Custom Software. Limitless Scale.</p>
+      <div class="footer-socials">
+        <a class="social-btn" href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
+        <a class="social-btn" href="#" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a class="social-btn" href="#" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#" onclick="openModal('msp');return false">MSP &amp; Security</a></li>
+        <li><a href="#" onclick="openModal('webmobile');return false">Web &amp; Mobile Apps</a></li>
+        <li><a href="#" onclick="openModal('ai');return false">AI &amp; Automation</a></li>
+        <li><a href="#" onclick="openModal('consulting');return false">Enterprise Consulting</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#advantage">About Caminsta</a></li>
+        <li><a href="#process">How We Work</a></li>
+        <li><a href="#stats">Track Record</a></li>
+        <li><a href="#cta-banner">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Get Started</h4>
+      <ul>
+        <li><a href="#" onclick="openAudit();return false">Free IT Audit</a></li>
+        <li><a href="#services">Explore Services</a></li>
+        <li><a href="#advantage">Tech Stack</a></li>
+        <li><a href="#process">Our Process</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Caminsta. All rights reserved.</span>
+    <div class="footer-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Security</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ════ MODAL: MSP ════ -->
+<div class="modal-overlay" id="modal-msp" onclick="closeModalOutside(event,'modal-msp')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-msp')">×</button>
+    <div class="modal-service-badge"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3.5" fill="#22d3ee"/></svg>MSP &amp; Security</div>
+    <h2 class="modal-title">Proactive Security That Never Sleeps</h2>
+    <p class="modal-intro">Your business runs 24/7 — so does your attack surface. Caminsta's Managed Security Services combine continuous monitoring, enterprise-grade tooling, and human expertise to keep your organization protected, compliant, and operational. We don't wait for incidents. We prevent them.</p>
+    <div class="modal-section-title">Core Service Offerings</div>
+    <ul class="modal-list">
+      <li><strong>Managed Detection &amp; Response (MDR)</strong> — Real-time threat detection across endpoints, network, and cloud with a guaranteed 15-minute response window. Our SOC analysts triage every alert — no alert fatigue, no missed threats, ever.</li>
+      <li><strong>Endpoint Protection Platform (EPP/EDR)</strong> — Next-gen AV, behavioral analysis, and rollback capabilities on every device. CrowdStrike, SentinelOne, or Microsoft Defender Endpoint — we deploy and manage whichever fits your stack and budget.</li>
+      <li><strong>Zero-Trust Network Architecture</strong> — Identity-based access control, micro-segmentation, and ZTNA policies that assume breach and limit blast radius. Built on proven frameworks including NIST SP 800-207.</li>
+      <li><strong>Email Security &amp; Anti-Phishing</strong> — Advanced threat protection for Microsoft 365 and Google Workspace. Includes link sandboxing, attachment detonation, DMARC/DKIM hardening, and quarterly phishing simulations with staff training.</li>
+      <li><strong>Vulnerability Management</strong> — Continuous scanning, risk-ranked vulnerability reports, and coordinated patching across servers, workstations, and network devices. Nothing slips through untracked.</li>
+      <li><strong>Compliance &amp; Audit Readiness</strong> — Controls mapped to SOC 2 Type II, HIPAA, PCI-DSS, and NIST CSF. We prepare you for audits with evidence collection, gap remediation, and auditor liaison support.</li>
+    </ul>
+    <div class="modal-section-title">Included in Every MSP Plan</div>
+    <div class="modal-two-col">
+      <ul class="modal-list"><li>Dedicated account engineer</li><li>Monthly security scorecard</li><li>Unlimited helpdesk tickets</li><li>Disaster recovery planning</li></ul>
+      <ul class="modal-list"><li>Quarterly security reviews</li><li>24/7 NOC monitoring</li><li>Vendor license management</li><li>Backup integrity testing</li></ul>
+    </div>
+    <div class="modal-cta-row">
+      <button class="btn-primary" onclick="closeModal('modal-msp');openAudit()">Get Your Free Security Audit</button>
+      <button class="btn-secondary" onclick="closeModal('modal-msp')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MODAL: WEB & MOBILE ════ -->
+<div class="modal-overlay" id="modal-webmobile" onclick="closeModalOutside(event,'modal-webmobile')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-webmobile')">×</button>
+    <div class="modal-service-badge"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3.5" fill="#22d3ee"/></svg>Web &amp; Mobile Development</div>
+    <h2 class="modal-title">Software Built Exactly for Your Business</h2>
+    <p class="modal-intro">Off-the-shelf software makes your business fit the tool. We flip that equation. Every application Caminsta builds starts from your processes, your data, and your goals — resulting in software your team actually uses and that gives you a genuine, lasting competitive edge.</p>
+    <div class="modal-section-title">What We Build</div>
+    <ul class="modal-list">
+      <li><strong>Internal Business Applications</strong> — PTO and leave management, approval workflows, expense tracking portals, inventory dashboards, HR onboarding tools, and scheduling platforms. Custom-built for your team's exact flow — not a generic SaaS you've bent to fit.</li>
+      <li><strong>Customer-Facing Web Platforms</strong> — High-performance marketing sites, B2B portals, subscription platforms, and e-commerce solutions built with Next.js and React. Engineered for Core Web Vitals, SEO, and conversion rate from the ground up.</li>
+      <li><strong>Cross-Platform Mobile Apps</strong> — iOS and Android apps using React Native. Single codebase, fully native UX. Field service apps, customer portals, inspection tools, delivery tracking, and more — shipped to both stores simultaneously.</li>
+      <li><strong>API Development &amp; Integrations</strong> — RESTful and GraphQL APIs that bridge your systems: Sage 100, Salesforce, QuickBooks, payroll platforms, or any third-party service your operations depend on. Clean, documented, versioned.</li>
+      <li><strong>Legacy System Modernization</strong> — We migrate aging PHP, ASP.NET, or Access-based systems into modern, maintainable architectures — preserving your data and institutional logic while eliminating the technical debt that slows your team down.</li>
+    </ul>
+    <div class="modal-section-title">Our Development Approach</div>
+    <div class="modal-two-col">
+      <ul class="modal-list"><li>Agile sprints with weekly demos</li><li>Dedicated project manager</li><li>Staging environment for every build</li><li>Automated testing pipeline</li></ul>
+      <ul class="modal-list"><li>Full source code ownership</li><li>Comprehensive documentation</li><li>Post-launch support plans</li><li>Performance SLA guarantees</li></ul>
+    </div>
+    <div class="modal-cta-row">
+      <button class="btn-primary" onclick="closeModal('modal-webmobile');openAudit()">Start Your Project Discovery</button>
+      <button class="btn-secondary" onclick="closeModal('modal-webmobile')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MODAL: AI ════ -->
+<div class="modal-overlay" id="modal-ai" onclick="closeModalOutside(event,'modal-ai')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-ai')">×</button>
+    <div class="modal-service-badge"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3.5" fill="#22d3ee"/></svg>AI &amp; Automation</div>
+    <h2 class="modal-title">Multiply Productivity With Intelligent Automation</h2>
+    <p class="modal-intro">AI is no longer a future investment — it's the competitive floor. Companies that automate repetitive workflows and embed intelligence into their processes move faster, make fewer errors, and free their people for high-value work. Caminsta makes that transition practical, fast, and ROI-positive.</p>
+    <div class="modal-section-title">Automation &amp; AI Solutions</div>
+    <ul class="modal-list">
+      <li><strong>AI Helpdesk &amp; Ticketing</strong> — Intelligent ticket classification, automatic routing to the right team, and AI-suggested resolutions. Reduce mean time to resolution by 60% and cut L1 support volume in half. Integrates with ConnectWise, ServiceNow, and custom systems.</li>
+      <li><strong>Document Intelligence</strong> — Automate the reading, extraction, and processing of invoices, contracts, forms, and reports. Connect document AI to your ERP, CRM, or custom database for straight-through processing with minimal human review.</li>
+      <li><strong>RPA Workflows</strong> — Build bots that handle repetitive data tasks: pulling data from portals, reconciling spreadsheets, generating reports, filling forms. Your team reclaims 10–30 hours per week. Guaranteed measurable ROI within 90 days.</li>
+      <li><strong>Custom LLM Applications</strong> — Integrate large language models (OpenAI, Anthropic, or locally-hosted models) into your tools — internal knowledge bases, Q&amp;A systems, code assistants, proposal generators, and customer-facing chat experiences.</li>
+      <li><strong>Predictive Analytics &amp; BI</strong> — Connect SQL Server, ERP, or CRM data to AI-powered dashboards that surface anomalies, forecast demand, flag churn risk, and generate executive summaries automatically.</li>
+      <li><strong>Process Orchestration</strong> — Multi-system workflows spanning CRM, ERP, email, and custom apps — triggered by events, schedules, or AI decisions. Built with n8n, custom pipelines, or Azure Logic Apps depending on your stack.</li>
+    </ul>
+    <div class="modal-cta-row">
+      <button class="btn-primary" onclick="closeModal('modal-ai');openAudit()">Find Your Automation Wins</button>
+      <button class="btn-secondary" onclick="closeModal('modal-ai')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MODAL: CONSULTING ════ -->
+<div class="modal-overlay" id="modal-consulting" onclick="closeModalOutside(event,'modal-consulting')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-consulting')">×</button>
+    <div class="modal-service-badge"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3.5" fill="#22d3ee"/></svg>Enterprise Consulting</div>
+    <h2 class="modal-title">Strategic IT Expertise at the Executive Level</h2>
+    <p class="modal-intro">Enterprise systems are complex. Bad decisions compound over years. Caminsta brings seasoned expertise across ERP, database infrastructure, cloud strategy, and IT operations — helping you make the right calls the first time and fix the costly ones without downtime.</p>
+    <div class="modal-section-title">Consulting Specializations</div>
+    <ul class="modal-list">
+      <li><strong>Sage 100 ERP</strong> — Full lifecycle support: initial implementation, module configuration, data migration, user training, customizations (Crystal Reports, custom modules), and ongoing managed support. Deep experience across manufacturing, distribution, and professional services verticals.</li>
+      <li><strong>SQL Server Architecture</strong> — Database design, query optimization, index tuning, Always On Availability Groups, disaster recovery, replication, and migration to SQL Server 2022. We've rescued databases running 30-second queries back to sub-millisecond response times.</li>
+      <li><strong>Cloud Migration Strategy</strong> — Assess your on-premise footprint and design an optimal migration path — lift-and-shift for speed or cloud-native redesign for long-term economics. Azure and AWS certified architects on staff with 50+ migration projects delivered.</li>
+      <li><strong>IT Infrastructure Auditing</strong> — Comprehensive review of your entire IT environment: network topology, server health, software licensing compliance, backup integrity, and security posture. Delivered as an executive briefing with a prioritized action plan and budget estimates.</li>
+      <li><strong>Virtual CTO (vCTO) Services</strong> — A senior technology strategist embedded in your leadership team on a fractional basis. IT roadmapping, vendor negotiation, board-level technology reporting, and bridging the gap between your technical staff and executive decision-making.</li>
+    </ul>
+    <div class="modal-section-title">Engagement Models</div>
+    <div class="modal-two-col">
+      <ul class="modal-list"><li>Project-based engagements</li><li>Retained advisory hours</li><li>Staff augmentation</li><li>Emergency response (48h SLA)</li></ul>
+      <ul class="modal-list"><li>Fractional vCTO packages</li><li>Quarterly IT strategy reviews</li><li>Vendor selection support</li><li>M&amp;A IT due diligence</li></ul>
+    </div>
+    <div class="modal-cta-row">
+      <button class="btn-primary" onclick="closeModal('modal-consulting');openAudit()">Request a Consultation</button>
+      <button class="btn-secondary" onclick="closeModal('modal-consulting')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ IT AUDIT WIZARD ════ -->
+<div class="audit-overlay" id="auditOverlay" onclick="closeAuditOutside(event)">
+  <div class="audit-box" id="auditBox">
+    <button class="audit-close" onclick="closeAudit()">×</button>
+    <div class="audit-header">
+      <div class="section-label" style="margin-bottom:8px">Free IT Audit</div>
+      <h2 class="audit-title">Assess Your IT Health</h2>
+      <p class="audit-subtitle">Answer 7 quick questions and receive an instant, personalized assessment of your IT infrastructure, security posture, and automation potential.</p>
+    </div>
+    <div class="audit-progress" id="auditProgressWrap">
+      <div class="progress-meta">
+        <span class="progress-label" id="progressLabel">Question 1 of 7</span>
+        <span class="progress-count" id="progressCount">14%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:14%"></div></div>
+    </div>
+    <div class="audit-steps" id="auditStepsWrap">
+
+      <!-- Q1 -->
+      <div class="audit-step active" id="step-1">
+        <div class="step-q">How large is your organization?</div>
+        <div class="step-hint">Helps us calibrate the complexity of your IT environment and recommend appropriately scaled solutions.</div>
+        <div class="options-grid">
+          <button class="option-btn" onclick="selectOption(this,1)"><span class="option-icon">👤</span><span class="option-text"><span class="option-label">1–10 employees</span><span class="option-sub">Small team or startup</span></span></button>
+          <button class="option-btn" onclick="selectOption(this,1)"><span class="option-icon">👥</span><span class="option-text"><span class="option-label">11–50 employees</span><span class="option-sub">Growing SMB</span></span></button>
+          <button class="option-btn" onclick="selectOption(this,1)"><span class="option-icon">🏢</span><span class="option-text"><span class="option-label">51–250 employees</span><span class="option-sub">Mid-market company</span></span></button>
+          <button class="option-btn" onclick="selectOption(this,1)"><span class="option-icon">🏭</span><span class="option-text"><span class="option-label">250+ employees</span><span class="option-sub">Large enterprise</span></span></button>
+        </div>
+        <div class="audit-nav"><div></div><button class="audit-nav-next" id="next-1" disabled onclick="nextStep(2)">Next →</button></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="audit-step" id="step-2">
+        <div class="step-q">How is your IT currently managed?</div>
+        <div class="step-hint">Understanding your current setup helps us identify gaps and surface the highest-impact opportunities.</div>
+        <div class="options-grid">
+          <button class="option-btn" onclick="selectOption(this,2)"><span class="option-icon">🙋</span><span class="option-text"><span class="option-label">Internal IT team</span><span class="option-sub">We have dedicated IT staff</span></span></button>
+          <button class="option-btn" onclick="selectOption(this,2)"><span class="option-icon">🤝</span><span class="option-text"><span class="option-label">External MSP</span><span class="option-sub">Using another provider</span></span></button>
+          <button class="option-btn" onclick="selectOption(this,2)"><span class="option-icon">🧩</span><span class="option-text"><span class="option-label">Mixed / hybrid</span><span class="option-sub">Internal + outside help</span></span></button>
+          <button class="option-btn" onclick="selectOption(this,2)"><span class="option-icon">❓</span><span class="option-text"><span class="option-label">Ad hoc / none</span><span class="option-sub">No formal IT management</span></span></button>
+        </div>
+        <div class="audit-nav">
+          <button class="audit-nav-prev" onclick="prevStep(1)">← Back</button>
+          <button class="audit-nav-next" id="next-2" disabled onclick="nextStep(3)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="audit-step" id="step-3">
+        <div class="step-q">What is your biggest IT challenge right now?</div>
+        <div class="step-hint">Select the issue that creates the most friction, risk, or cost for your business today.</div>
+        <div class="options-grid">
+          <button class="option-btn" onclick="selectOption(this,3)"><span class="option-icon">🔐</span><span class="option-text"><span class="option-label">Security &amp; Compliance</span><span class="option-sub">Cyber threats, audits, breach risk</span></span></button>
+          <button class="option-btn" onclick="selectOption(this,3)"><span class="option-icon">⚙️</span><span class="option-text"><span class="option-label">Manual Processes</span><span class="option-sub">Too much repetitive manual work</span></span></button>
+          <button class="option-btn" onclick="selectOption(this,3)"><span class="option-icon">💻</span><span class="option-text"><span class="option-label">Outdated Software</span><span class="option-sub">Legacy systems slowing growth</span></span></button>
+          <button class="option-btn" onclick="selectOption(this,3)"><span class="option-icon">📉</span><span class="option-text"><span class="option-label">Downtime &amp; Reliability</span><span class="option-sub">Outages impacting productivity</span></span></button>
+        </div>
+        <div class="audit-nav">
+          <button class="audit-nav-prev" onclick="prevStep(2)">← Back</button>
+          <button class="audit-nav-next" id="next-3" disabled onclick="nextStep(4)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="audit-step" id="step-4">
+        <div class="step-q">How would you rate your current cybersecurity posture?</div>
+        <div class="step-hint">Be honest — this is confidential and only used to calibrate your assessment results accurately.</div>
+        <div>
+          <input type="range" class="range-input" id="securitySlider" min="1" max="5" value="3" oninput="updateSlider()"/>
+          <div class="range-labels"><span>Not protected</span><span>Basic</span><span>Adequate</span><span>Strong</span><span>Enterprise</span></div>
+          <div style="text-align:center;margin-top:16px;padding:14px;background:var(--cyan-dim);border:1px solid var(--glass-border);border-radius:10px;">
+            <div id="sliderLabel" style="font-size:.92rem;font-weight:600;color:var(--white)">Adequate — Some controls in place, gaps likely exist</div>
+          </div>
+        </div>
+        <div class="audit-nav">
+          <button class="audit-nav-prev" onclick="prevStep(3)">← Back</button>
+          <button class="audit-nav-next" onclick="nextStep(5)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="audit-step" id="step-5">
+        <div class="step-q">Are you considering any custom software development?</div>
+        <div class="step-hint">Helps us determine whether software development should be part of your recommended roadmap.</div>
+        <div class="options-grid">
+          <button class="option-btn" onclick="selectOption(this,5)"><span class="option-icon">✅</span><span class="option-text"><span class="option-label">Yes, actively planning</span><span class="option-sub">We have requirements ready</span></span></button>
+          <button class="option-btn" onclick="selectOption(this,5)"><span class="option-icon">🤔</span><span class="option-text"><span class="option-label">Evaluating options</span><span class="option-sub">Exploring build vs. buy</span></span></button>
+          <button class="option-btn" onclick="selectOption(this,5)"><span class="option-icon">📋</span><span class="option-text"><span class="option-label">Not right now</span><span class="option-sub">Focused on infrastructure</span></span></button>
+          <button class="option-btn" onclick="selectOption(this,5)"><span class="option-icon">💡</span><span class="option-text"><span class="option-label">Open to ideas</span><span class="option-sub">Would consider if ROI is clear</span></span></button>
+        </div>
+        <div class="audit-nav">
+          <button class="audit-nav-prev" onclick="prevStep(4)">← Back</button>
+          <button class="audit-nav-next" id="next-5" disabled onclick="nextStep(6)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="audit-step" id="step-6">
+        <div class="step-q">What is your approximate monthly IT budget?</div>
+        <div class="step-hint">This helps us recommend solutions that maximize ROI within your investment level.</div>
+        <div class="options-grid">
+          <button class="option-btn" onclick="selectOption(this,6)"><span class="option-icon">💰</span><span class="option-text"><span class="option-label">Under $2,000/mo</span><span class="option-sub">Lean or early-stage ops</span></span></button>
+          <button class="option-btn" onclick="selectOption(this,6)"><span class="option-icon">💰💰</span><span class="option-text"><span class="option-label">$2,000–$8,000/mo</span><span class="option-sub">Growing investment</span></span></button>
+          <button class="option-btn" onclick="selectOption(this,6)"><span class="option-icon">💰💰💰</span><span class="option-text"><span class="option-label">$8,000–$25,000/mo</span><span class="option-sub">Mid-market IT spend</span></span></button>
+          <button class="option-btn" onclick="selectOption(this,6)"><span class="option-icon">🏦</span><span class="option-text"><span class="option-label">$25,000+/mo</span><span class="option-sub">Enterprise scale investment</span></span></button>
+        </div>
+        <div class="audit-nav">
+          <button class="audit-nav-prev" onclick="prevStep(5)">← Back</button>
+          <button class="audit-nav-next" id="next-6" disabled onclick="nextStep(7)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="audit-step" id="step-7">
+        <div class="step-q">Where should we send your IT assessment report?</div>
+        <div class="step-hint">We'll use this to prepare your personalized report and schedule a 30-minute call with a Caminsta engineer — insights only, no sales pitch.</div>
+        <div class="input-row" style="margin-bottom:14px">
+          <div><label class="input-label">First Name</label><input class="audit-input" type="text" id="audit-fname" placeholder="Alex" oninput="checkContactForm()"/></div>
+          <div><label class="input-label">Last Name</label><input class="audit-input" type="text" id="audit-lname" placeholder="Johnson" oninput="checkContactForm()"/></div>
+        </div>
+        <div style="margin-bottom:14px"><label class="input-label">Work Email</label><input class="audit-input" type="email" id="audit-email" placeholder="alex@yourcompany.com" oninput="checkContactForm()"/></div>
+        <div style="margin-bottom:14px"><label class="input-label">Company Name</label><input class="audit-input" type="text" id="audit-company" placeholder="Acme Corp" oninput="checkContactForm()"/></div>
+        <div><label class="input-label">Specific challenges or goals? (Optional)</label><textarea class="audit-input" id="audit-notes" rows="3" placeholder="e.g. We're planning to migrate from on-prem to Azure and need help securing and integrating our Sage 100 environment..."></textarea></div>
+        <div class="audit-nav">
+          <button class="audit-nav-prev" onclick="prevStep(6)">← Back</button>
+          <button class="audit-nav-next" id="next-7" disabled onclick="submitAudit()">Generate My Report →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="audit-results">
+      <div class="results-header">
+        <div class="section-label">Your IT Assessment</div>
+        <h2 class="audit-title" id="results-title">Your IT Health Report</h2>
+      </div>
+      <div class="results-score-wrap">
+        <div class="score-circle">
+          <svg width="96" height="96" viewBox="0 0 96 96">
+            <circle cx="48" cy="48" r="40" fill="none" stroke="rgba(148,163,184,.15)" stroke-width="8"/>
+            <circle cx="48" cy="48" r="40" fill="none" stroke="#22d3ee" stroke-width="8" stroke-linecap="round" stroke-dasharray="251" id="scoreArc" stroke-dashoffset="251" style="transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)"/>
+          </svg>
+          <div class="score-val"><span class="score-num" id="scoreNum">0</span><span class="score-max">/100</span></div>
+        </div>
+        <div class="score-info">
+          <div class="score-title" id="score-title-text">Calculating...</div>
+          <div class="score-desc" id="score-desc-text"></div>
+        </div>
+      </div>
+      <div class="results-grid" id="results-grid"></div>
+      <div class="results-cta">
+        <div class="results-cta-title">Ready to close these gaps?</div>
+        <div class="results-cta-sub" id="results-cta-sub">Our engineers will review your answers and prepare a detailed remediation roadmap — completely free of charge.</div>
+        <button class="btn-primary" onclick="bookCall()">Get My Full Roadmap →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── NEURAL NETWORK ── */
+(function(){
+  const cv=document.getElementById('neural-canvas'),ctx=cv.getContext('2d');
+  let W,H,nodes=[],mouse={x:-1e4,y:-1e4};
+  const N=Math.min(75,Math.floor(window.innerWidth/16)),CD=130,MD=150;
+  function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  for(let i=0;i<N;i++)nodes.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*2+1.5});
+  document.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;});
+  (function draw(){
+    ctx.clearRect(0,0,W,H);
+    nodes.forEach(n=>{const dx=mouse.x-n.x,dy=mouse.y-n.y,d=Math.hypot(dx,dy);if(d<MD){n.x+=dx/d*.35;n.y+=dy/d*.35;}n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1;});
+    for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){const dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y,d=Math.hypot(dx,dy);if(d<CD){ctx.beginPath();ctx.strokeStyle=`rgba(34,211,238,${(1-d/CD)*.28})`;ctx.lineWidth=.7;ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);ctx.stroke();}}
+    nodes.forEach(n=>{ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);ctx.fillStyle=`rgba(34,211,238,${Math.hypot(mouse.x-n.x,mouse.y-n.y)<MD?.85:.38})`;ctx.fill();});
+    requestAnimationFrame(draw);
+  })();
+})();
+
+/* ── CURSOR ── */
+(function(){
+  const c=document.getElementById('cursor'),r=document.getElementById('cursor-ring');
+  let rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{c.style.left=e.clientX+'px';c.style.top=e.clientY+'px';rx+=(e.clientX-rx)*.12;ry+=(e.clientY-ry)*.12;});
+  (function loop(){r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(loop);})();
+  document.querySelectorAll('button,a').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{c.style.width='18px';c.style.height='18px';r.style.width='52px';r.style.height='52px';});
+    el.addEventListener('mouseleave',()=>{c.style.width='12px';c.style.height='12px';r.style.width='36px';r.style.height='36px';});
+  });
+})();
+
+/* ── 3D TILT ── */
+document.querySelectorAll('[data-tilt]').forEach(card=>{
+  card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.transform=`perspective(800px) rotateX(${-y*10}deg) rotateY(${x*10}deg) translateZ(8px)`;const g=card.querySelector('.card-glow-cursor');if(g){g.style.left=(e.clientX-r.left)+'px';g.style.top=(e.clientY-r.top)+'px';}});
+  card.addEventListener('mouseleave',()=>{card.style.transform='perspective(800px) rotateX(0) rotateY(0) translateZ(0)';});
+});
+
+/* ── SCROLL REVEAL ── */
+const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target);}}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+/* ── COUNT UP ── */
+const co=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const el=e.target,t=parseFloat(el.dataset.count),isD=t%1!==0;let cur=0;const timer=setInterval(()=>{cur+=t/112;if(cur>=t){cur=t;clearInterval(timer);}el.textContent=(isD?cur.toFixed(1):Math.floor(cur))+(isD?'':'+');},16);co.unobserve(el);}),{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el=>co.observe(el));
+
+/* ── CARD TOGGLE ── */
+function toggleCard(btn){const d=btn.nextElementSibling,open=d.classList.toggle('open');btn.querySelector('svg').style.transform=open?'rotate(180deg)':'';btn.firstChild.textContent=open?'Show Less ':'Learn More ';}
+
+/* ── NAV ── */
+document.getElementById('mobileToggle').addEventListener('click',()=>document.getElementById('mobileMenu').classList.toggle('open'));
+function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');}
+window.addEventListener('scroll',()=>{const n=document.getElementById('navbar');n.style.background=window.scrollY>60?'rgba(2,6,23,.93)':'rgba(2,6,23,.65)';n.style.height=window.scrollY>60?'60px':'72px';});
+
+/* ── SERVICE MODALS ── */
+function openModal(id){document.getElementById('modal-'+id).classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(id){document.getElementById(id).classList.remove('open');document.body.style.overflow='';}
+function closeModalOutside(e,id){if(e.target===document.getElementById(id))closeModal(id);}
+
+/* ── AUDIT ── */
+const auditAnswers={};
+function openAudit(){document.getElementById('auditOverlay').classList.add('open');document.body.style.overflow='hidden';}
+function closeAudit(){document.getElementById('auditOverlay').classList.remove('open');document.body.style.overflow='';}
+function closeAuditOutside(e){if(e.target===document.getElementById('auditOverlay'))closeAudit();}
+
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Escape')return;
+  document.querySelectorAll('.modal-overlay.open').forEach(m=>{m.classList.remove('open');});
+  closeAudit();
+  document.body.style.overflow='';
+});
+
+function nextStep(n){document.getElementById('step-'+(n-1)).classList.remove('active');document.getElementById('step-'+n).classList.add('active');updateProgress(n);}
+function prevStep(n){document.getElementById('step-'+(n+1)).classList.remove('active');document.getElementById('step-'+n).classList.add('active');updateProgress(n);}
+function updateProgress(s){const p=Math.round(s/7*100);document.getElementById('progressFill').style.width=p+'%';document.getElementById('progressLabel').textContent='Question '+s+' of 7';document.getElementById('progressCount').textContent=p+'%';}
+
+function selectOption(btn,step){btn.closest('.options-grid').querySelectorAll('.option-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');auditAnswers['s'+step]=btn.querySelector('.option-label').textContent;const nx=document.getElementById('next-'+step);if(nx)nx.disabled=false;}
+
+const SL=['','Not Protected — No formal security controls in place. Immediate action required.','Basic Measures — Antivirus only. No monitoring, no policies, no incident response.','Adequate — Some controls exist but gaps likely. Partial compliance at best.','Strong — Good posture. Some advanced gaps remain; continuous monitoring is limited.','Enterprise Grade — Comprehensive security with continuous monitoring and formal programs.'];
+function updateSlider(){const v=parseInt(document.getElementById('securitySlider').value);document.getElementById('sliderLabel').textContent=SL[v];auditAnswers.sec=v;}
+updateSlider();
+
+function checkContactForm(){const ok=document.getElementById('audit-fname').value.trim()&&document.getElementById('audit-lname').value.trim()&&document.getElementById('audit-email').value.includes('@')&&document.getElementById('audit-company').value.trim();document.getElementById('next-7').disabled=!ok;}
+
+function submitAudit(){
+  auditAnswers.fname=document.getElementById('audit-fname').value.trim();
+  auditAnswers.company=document.getElementById('audit-company').value.trim();
+  document.getElementById('auditStepsWrap').style.display='none';
+  document.getElementById('auditProgressWrap').style.display='none';
+  document.getElementById('audit-results').style.display='block';
+  document.getElementById('auditBox').scrollTop=0;
+
+  const sec=auditAnswers.sec||3,mgmt=auditAnswers.s2||'',pain=auditAnswers.s3||'',dev=auditAnswers.s5||'',budget=auditAnswers.s6||'';
+  let score=45;
+  score+=(sec-1)*6;
+  if(mgmt.includes('Internal')||mgmt.includes('MSP'))score+=8;
+  if(mgmt.includes('none')||mgmt.includes('Ad hoc'))score-=12;
+  if(budget.includes('25,000')||budget.includes('8,000'))score+=6;
+  score=Math.min(97,Math.max(18,score));
+
+  document.getElementById('results-title').textContent=auditAnswers.fname+"'s IT Health Report";
+  animateScore(score);
+
+  let sTitle,sDesc;
+  if(score>=78){sTitle='Strong Foundation';sDesc='Your IT environment is well-managed with solid fundamentals. Key focus areas: advanced threat hunting, automation expansion, and long-term scalability planning.';}
+  else if(score>=58){sTitle='Room to Grow';sDesc='Good baseline, but notable gaps in security coverage, automation, or infrastructure resilience could expose you to risk or limit your growth velocity.';}
+  else if(score>=38){sTitle='Needs Attention';sDesc='Several critical areas require review. Unmanaged vulnerabilities and manual processes are costing you time, money, and operational stability.';}
+  else{sTitle='High Risk Detected';sDesc='Your current IT setup poses significant operational and security risk. Immediate remediation is recommended to protect your business, data, and continuity.';}
+  document.getElementById('score-title-text').textContent=sTitle;
+  document.getElementById('score-desc-text').textContent=sDesc;
+  if(score<38)document.getElementById('scoreArc').style.stroke='#ef4444';
+  else if(score<58)document.getElementById('scoreArc').style.stroke='#f59e0b';
+
+  const cards=[];
+  if(sec<=2)cards.push({t:'critical',i:'🚨',title:'Critical: Security Vulnerabilities',text:'Your security posture is below baseline. Immediate priorities: deploy EDR, enable network monitoring, implement MFA, and conduct a vulnerability scan.'});
+  else if(sec===3)cards.push({t:'warning',i:'⚠️',title:'Security Gaps Identified',text:'Basic protections exist but MDR, zero-trust, and incident response are missing. Modern attacks exploit exactly these gaps — patching them is a 90-day priority.'});
+  else cards.push({t:'good',i:'🛡️',title:'Security: Solid Baseline',text:'Good posture. Recommended next steps: third-party penetration test, compliance gap analysis, and table-top incident response exercise.'});
+  if(mgmt.includes('none')||mgmt.includes('Ad hoc'))cards.push({t:'critical',i:'🔧',title:'No Formal IT Management',text:'Without structured IT management, issues compound silently until they become outages. Proactive monitoring, asset management, and a helpdesk SLA are first priorities.'});
+  else if(mgmt.includes('MSP'))cards.push({t:'warning',i:'🔄',title:'Benchmark Your Current MSP',text:"Not all MSPs deliver the same value. We recommend benchmarking your provider's SLA, response times, toolstack, and security coverage against industry standards."});
+  else cards.push({t:'good',i:'✅',title:'IT Management in Place',text:'Structured IT management is a strong foundation. Opportunities exist to introduce AI-powered monitoring, predictive maintenance, and automation.'});
+  if(pain.includes('Manual'))cards.push({t:'warning',i:'🤖',title:'High Automation Opportunity',text:'Manual workflows identified as primary friction. RPA and AI automation typically reclaim 15–30% of team productive time. ROI measurable within 60–90 days.'});
+  else if(dev.includes('planning')||dev.includes('Evaluating'))cards.push({t:'info',i:'💻',title:'Software Development Roadmap Ready',text:'Custom software investment at your stage typically delivers 3–5x ROI over 18 months. A discovery workshop can validate the business case and scope within a week.'});
+  else cards.push({t:'info',i:'📊',title:'Optimization Opportunity',text:'Even well-run IT environments have blind spots. A structured audit typically reveals 20–40% savings in licensing, cloud spend, and process efficiency.'});
+  if(budget.includes('Under'))cards.push({t:'info',i:'📈',title:'Maximize Your IT Budget',text:'With a lean budget, prioritization is everything. A structured risk-based roadmap ensures every dollar addresses your highest-impact vulnerabilities first.'});
+  else if(budget.includes('25,000'))cards.push({t:'good',i:'🏗️',title:'Enterprise Investment Level',text:'Your budget supports a comprehensive program: fully managed security, custom software development, AI automation, and strategic vCTO advisory services.'});
+  else cards.push({t:'info',i:'💡',title:'Strategic IT Investment',text:'Your budget supports a managed security program plus one focused development or automation engagement per quarter. A phased roadmap maximizes compounding impact.'});
+
+  document.getElementById('results-grid').innerHTML=cards.map(c=>`<div class="result-card ${c.t}"><div class="rc-icon">${c.i}</div><div class="rc-title">${c.title}</div><div class="rc-text">${c.text}</div></div>`).join('');
+  document.getElementById('results-cta-sub').textContent=`Based on ${auditAnswers.company}'s profile, our engineers will prepare a specific remediation roadmap focused on ${pain||'your identified priorities'} — delivered within 24 hours.`;
+}
+
+function animateScore(target){
+  let cur=0;const arc=document.getElementById('scoreArc'),el=document.getElementById('scoreNum');
+  setTimeout(()=>{arc.style.strokeDashoffset=251-(251*target/100);},100);
+  const t=setInterval(()=>{cur+=target/88;if(cur>=target){cur=target;clearInterval(t);}el.textContent=Math.round(cur);},16);
+}
+
+function bookCall(){
+  closeAudit();
+  setTimeout(()=>alert('✅ Report request received!\n\nA Caminsta engineer will contact '+document.getElementById('audit-email').value+' within 24 hours with your full IT roadmap.\n\nThank you for trusting Caminsta.'),200);
+}
+</script>
+</body>
+</html>
