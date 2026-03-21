@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compassion Acupuncture & Herbal Medicine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --sage: #7A9E7E;
+    --sage-light: #A8C5A0;
+    --sage-muted: #C8DEC9;
+    --slate: #6B7B8D;
+    --slate-light: #8E9EAD;
+    --sand: #D4C4A8;
+    --sand-light: #EDE3D1;
+    --sand-warm: #C9B48A;
+    --off-white: #FAFAF7;
+    --cream: #F5F0E8;
+    --stone: #A89880;
+    --charcoal: #3D3830;
+    --ink: #2C2820;
+    --glass-bg: rgba(250, 250, 247, 0.72);
+    --glass-border: rgba(255, 255, 255, 0.45);
+    --transition: 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--off-white);
+    color: var(--charcoal);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.1rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(18px) saturate(1.4);
+    -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    background: var(--glass-bg);
+    border-bottom: 1px solid var(--glass-border);
+    transition: padding var(--transition);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--sage); font-style: italic; }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--slate);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--sage); }
+
+  .nav-cta {
+    background: var(--sage);
+    color: white !important;
+    padding: 0.55rem 1.4rem;
+    border-radius: 2rem;
+    font-size: 0.75rem !important;
+    letter-spacing: 0.1em;
+    transition: background 0.3s, transform 0.2s !important;
+  }
+
+  .nav-cta:hover { background: var(--charcoal) !important; transform: translateY(-1px); }
+
+  /* ─── HERO ────────────────────────────────── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 70% at 65% 55%, rgba(168, 197, 160, 0.22) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 60% at 20% 30%, rgba(212, 196, 168, 0.18) 0%, transparent 60%),
+      linear-gradient(160deg, #F0EDE5 0%, #EDE3D1 35%, #E0D8CB 65%, #D8CEBC 100%);
+  }
+
+  /* Organic SVG shapes */
+  .hero-blob {
+    position: absolute;
+    right: -5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 55vw;
+    max-width: 760px;
+    opacity: 0.9;
+  }
+
+  .hero-orb {
+    position: absolute;
+    top: 15%;
+    right: 8%;
+    width: 380px;
+    height: 380px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at 35% 35%, rgba(168,197,160,0.55), rgba(212,196,168,0.3) 50%, transparent 75%);
+    filter: blur(2px);
+    animation: breathe 8s ease-in-out infinite;
+  }
+
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.05); opacity: 1; }
+  }
+
+  .hero-line-art {
+    position: absolute;
+    right: 3%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48%;
+    max-width: 680px;
+    opacity: 0.55;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 640px;
+    padding: 0 3rem;
+    margin-left: 6vw;
+    animation: heroReveal 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  @keyframes heroReveal {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sage);
+    font-weight: 500;
+    margin-bottom: 1.8rem;
+    animation: heroReveal 1.2s 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--sage);
+  }
+
+  .hero-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 5.5vw, 4.4rem);
+    font-weight: 500;
+    line-height: 1.12;
+    color: var(--ink);
+    margin-bottom: 1.6rem;
+    animation: heroReveal 1.2s 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  .hero-headline em {
+    font-style: italic;
+    color: var(--sage);
+  }
+
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--slate);
+    max-width: 480px;
+    margin-bottom: 2.8rem;
+    animation: heroReveal 1.2s 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+    animation: heroReveal 1.2s 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  .btn-primary {
+    background: var(--sage);
+    color: white;
+    padding: 0.9rem 2.2rem;
+    border-radius: 2rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    transition: all 0.35s;
+    border: 1.5px solid var(--sage);
+  }
+
+  .btn-primary:hover {
+    background: var(--ink);
+    border-color: var(--ink);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(60,55,45,0.18);
+  }
+
+  .btn-ghost {
+    color: var(--charcoal);
+    font-size: 0.82rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.3s;
+  }
+
+  .btn-ghost:hover { color: var(--sage); }
+
+  .btn-ghost svg { transition: transform 0.3s; }
+  .btn-ghost:hover svg { transform: translateX(4px); }
+
+  .hero-trust {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 6vw;
+    display: flex;
+    gap: 3rem;
+    animation: heroReveal 1.2s 0.8s both;
+    z-index: 2;
+  }
+
+  .hero-trust-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .trust-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--ink);
+  }
+
+  .trust-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    right: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 2;
+    animation: heroReveal 1.4s 1s both;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, transparent, var(--stone));
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0% { transform: scaleY(0); transform-origin: top; opacity: 1; }
+    50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+    100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
+  }
+
+  .scroll-text {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--stone);
+    writing-mode: vertical-rl;
+  }
+
+  /* ─── WHY SECTION ─────────────────────────── */
+  .section-why {
+    padding: 8rem 6vw;
+    background: var(--off-white);
+    position: relative;
+  }
+
+  .section-header {
+    max-width: 560px;
+    margin-bottom: 5rem;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sage);
+    font-weight: 500;
+    margin-bottom: 1.2rem;
+  }
+
+  .eyebrow::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 1px;
+    background: var(--sage);
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+
+  .section-title em { font-style: italic; color: var(--sage); }
+
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+  }
+
+  .pillar-card {
+    padding: 2.8rem 2.5rem;
+    background: var(--cream);
+    border-radius: 1.2rem;
+    border: 1px solid rgba(168,197,160,0.2);
+    transition: transform var(--transition), box-shadow var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pillar-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--sage-light), var(--sand-warm));
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .pillar-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(60,55,45,0.1); }
+  .pillar-card:hover::before { opacity: 1; }
+
+  .pillar-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1.8rem;
+    color: var(--sage);
+  }
+
+  .pillar-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.9rem;
+  }
+
+  .pillar-body {
+    font-size: 0.88rem;
+    line-height: 1.75;
+    color: var(--slate);
+  }
+
+  .pillar-points {
+    margin-top: 1.2rem;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .pillar-points li {
+    font-size: 0.82rem;
+    color: var(--slate);
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .pillar-points li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--sage);
+    font-size: 0.75rem;
+  }
+
+  /* ─── PHILOSOPHY ──────────────────────────── */
+  .section-philosophy {
+    padding: 8rem 6vw;
+    background: linear-gradient(135deg, #2C2820 0%, #3D3830 60%, #4A3F35 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .philosophy-bg-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='40' cy='40' r='30' fill='none' stroke='%23FFFFFF' stroke-width='1'/%3E%3Ccircle cx='40' cy='40' r='20' fill='none' stroke='%23FFFFFF' stroke-width='0.5'/%3E%3Ccircle cx='40' cy='40' r='10' fill='none' stroke='%23FFFFFF' stroke-width='0.5'/%3E%3C/svg%3E");
+  }
+
+  .philosophy-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8rem;
+    align-items: center;
+  }
+
+  .philosophy-content .eyebrow { color: var(--sage-light); }
+  .philosophy-content .eyebrow::before { background: var(--sage-light); }
+
+  .philosophy-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--sand-light);
+    margin-bottom: 2rem;
+  }
+
+  .philosophy-title em { font-style: italic; color: var(--sage-light); }
+
+  .philosophy-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(237,227,209,0.75);
+    margin-bottom: 2.5rem;
+  }
+
+  .philosophy-quote {
+    border-left: 2px solid var(--sage);
+    padding-left: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .philosophy-quote p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--sand-light);
+    line-height: 1.6;
+  }
+
+  .philosophy-visual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+
+  .phil-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 1rem;
+    padding: 2rem 1.6rem;
+    backdrop-filter: blur(8px);
+    transition: background 0.3s;
+  }
+
+  .phil-card:hover { background: rgba(255,255,255,0.09); }
+
+  .phil-card:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .phil-card-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 400;
+    color: var(--sage);
+    margin-bottom: 0.5rem;
+  }
+
+  .phil-card-title {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sand-light);
+    margin-bottom: 0.6rem;
+  }
+
+  .phil-card-body {
+    font-size: 0.82rem;
+    color: rgba(237,227,209,0.6);
+    line-height: 1.65;
+  }
+
+  /* ─── SERVICES ────────────────────────────── */
+  .section-services {
+    padding: 8rem 6vw;
+    background: var(--cream);
+  }
+
+  .services-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: end;
+    margin-bottom: 5rem;
+  }
+
+  .services-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--slate);
+    line-height: 1.7;
+    max-width: 420px;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .service-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.2rem;
+    background: var(--off-white);
+    border: 1px solid rgba(168,197,160,0.2);
+    transition: transform var(--transition);
+  }
+
+  .service-item:hover { transform: translateY(-4px); }
+
+  .service-thumb {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: linear-gradient(135deg, var(--sage-muted), var(--sand-light));
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .service-thumb svg { opacity: 0.4; }
+
+  .service-thumb-1 { background: linear-gradient(135deg, #C8DEC9, #A8C5A0); }
+  .service-thumb-2 { background: linear-gradient(135deg, #EDE3D1, #D4C4A8); }
+  .service-thumb-3 { background: linear-gradient(135deg, #D0DFDF, #9DB8B8); }
+  .service-thumb-4 { background: linear-gradient(135deg, #E8DDD0, #C9B48A); }
+  .service-thumb-5 { background: linear-gradient(135deg, #D8E0D0, #B0C8B0); }
+  .service-thumb-6 { background: linear-gradient(135deg, #E5E0D8, #CCC0A8); }
+
+  .service-tag {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(250,250,247,0.85);
+    backdrop-filter: blur(6px);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sage);
+    padding: 0.3rem 0.8rem;
+    border-radius: 2rem;
+  }
+
+  .service-body {
+    padding: 1.6rem 1.8rem 2rem;
+  }
+
+  .service-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.12rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.6rem;
+  }
+
+  .service-desc {
+    font-size: 0.83rem;
+    line-height: 1.7;
+    color: var(--slate);
+  }
+
+  .service-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sage);
+    text-decoration: none;
+    font-weight: 500;
+    transition: gap 0.2s;
+  }
+
+  .service-link:hover { gap: 0.7rem; }
+
+  /* ─── TESTIMONIALS ────────────────────────── */
+  .section-testimonials {
+    padding: 7rem 6vw;
+    background: var(--off-white);
+    overflow: hidden;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 4rem;
+  }
+
+  .testimonial-card {
+    background: var(--cream);
+    border: 1px solid rgba(168,197,160,0.2);
+    border-radius: 1.2rem;
+    padding: 2.4rem 2.2rem;
+    transition: transform var(--transition);
+  }
+
+  .testimonial-card:hover { transform: translateY(-4px); }
+
+  .stars {
+    display: flex;
+    gap: 0.2rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .stars span { color: var(--sand-warm); font-size: 0.9rem; }
+
+  .testimonial-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.7;
+    color: var(--charcoal);
+    margin-bottom: 1.5rem;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .author-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--sage-muted), var(--sand-light));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    color: var(--sage);
+  }
+
+  .author-name {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .author-tag {
+    font-size: 0.73rem;
+    color: var(--stone);
+    margin-top: 0.1rem;
+  }
+
+  /* ─── BOOKING ─────────────────────────────── */
+  .section-booking {
+    padding: 8rem 6vw;
+    background: linear-gradient(160deg, var(--sage) 0%, #5A8060 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .booking-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(255,255,255,0.08), transparent);
+  }
+
+  .booking-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .booking-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 400;
+    color: white;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  .booking-title em { font-style: italic; color: var(--sand-light); }
+
+  .booking-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.75;
+    margin-bottom: 2.5rem;
+  }
+
+  .booking-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .booking-step {
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .step-text { font-size: 0.88rem; color: rgba(255,255,255,0.8); line-height: 1.6; padding-top: 0.35rem; }
+  .step-text strong { color: white; }
+
+  .booking-form-card {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 1.4rem;
+    padding: 3rem 2.8rem;
+  }
+
+  .form-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: white;
+    margin-bottom: 2rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-field label {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+  }
+
+  .form-field input,
+  .form-field select,
+  .form-field textarea {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 0.6rem;
+    padding: 0.75rem 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: white;
+    outline: none;
+    transition: border-color 0.3s, background 0.3s;
+    width: 100%;
+  }
+
+  .form-field input::placeholder,
+  .form-field textarea::placeholder { color: rgba(255,255,255,0.4); }
+
+  .form-field input:focus,
+  .form-field select:focus,
+  .form-field textarea:focus {
+    border-color: rgba(255,255,255,0.55);
+    background: rgba(255,255,255,0.15);
+  }
+
+  .form-field select option { background: var(--ink); color: white; }
+
+  .form-field textarea { resize: none; min-height: 90px; }
+
+  .btn-book {
+    width: 100%;
+    background: white;
+    color: var(--sage);
+    border: none;
+    padding: 1rem;
+    border-radius: 0.6rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 0.5rem;
+  }
+
+  .btn-book:hover { background: var(--ink); color: white; transform: translateY(-1px); }
+
+  /* ─── FOOTER ──────────────────────────────── */
+  footer {
+    background: var(--ink);
+    padding: 5rem 6vw 3rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 4rem;
+  }
+
+  .footer-brand .nav-logo { color: var(--sand-light); margin-bottom: 1rem; display: block; }
+  .footer-brand .nav-logo span { color: var(--sage-light); }
+
+  .footer-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: rgba(237,227,209,0.55);
+    line-height: 1.65;
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-contact p {
+    font-size: 0.82rem;
+    color: rgba(237,227,209,0.55);
+    margin-bottom: 0.4rem;
+    line-height: 1.6;
+  }
+
+  .footer-heading {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sage-light);
+    margin-bottom: 1.4rem;
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .footer-links a {
+    font-size: 0.83rem;
+    color: rgba(237,227,209,0.55);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .footer-links a:hover { color: var(--sage-light); }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-copy {
+    font-size: 0.75rem;
+    color: rgba(237,227,209,0.3);
+  }
+
+  /* ─── STICKY CTA ──────────────────────────── */
+  .sticky-cta {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 99;
+    background: var(--sage);
+    color: white;
+    padding: 0.85rem 1.8rem;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    box-shadow: 0 8px 28px rgba(122,158,126,0.4);
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  .sticky-cta.visible { opacity: 1; transform: translateY(0); }
+  .sticky-cta:hover { background: var(--ink); box-shadow: 0 8px 28px rgba(44,40,32,0.3); transform: translateY(-2px); }
+
+  /* ─── SCROLL ANIMATIONS ───────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+
+  /* ─── MOBILE ──────────────────────────────── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero-content { padding: 0 1.5rem; margin-left: 0; max-width: 100%; }
+    .hero-orb { display: none; }
+    .hero-line-art { display: none; }
+    .hero-trust { left: 1.5rem; gap: 2rem; }
+    .pillars-grid, .services-grid, .testimonials-grid { grid-template-columns: 1fr; }
+    .philosophy-inner, .booking-inner, .services-intro, .footer-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .section-why, .section-philosophy, .section-services, .section-testimonials, .section-booking { padding: 5rem 1.5rem; }
+    footer { padding: 4rem 1.5rem 2rem; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+    .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+    .booking-form-card { padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Compassion <span>Acupuncture</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#philosophy">Our Philosophy</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#booking" class="nav-cta">Book a Visit</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-orb"></div>
+
+  <!-- Decorative line art: acupuncture meridian paths -->
+  <svg class="hero-line-art" viewBox="0 0 600 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Body silhouette & meridian lines -->
+    <ellipse cx="300" cy="100" rx="70" ry="80" stroke="#7A9E7E" stroke-width="0.8" fill="none"/>
+    <line x1="300" y1="180" x2="300" y2="580" stroke="#7A9E7E" stroke-width="0.8"/>
+    <path d="M300 230 C220 250 170 300 150 380 C140 430 155 480 200 510" stroke="#A8C5A0" stroke-width="0.7" fill="none"/>
+    <path d="M300 230 C380 250 430 300 450 380 C460 430 445 480 400 510" stroke="#A8C5A0" stroke-width="0.7" fill="none"/>
+    <path d="M300 380 C250 390 220 420 210 460 C205 490 215 530 240 555" stroke="#C8DEC9" stroke-width="0.7" fill="none"/>
+    <path d="M300 380 C350 390 380 420 390 460 C395 490 385 530 360 555" stroke="#C8DEC9" stroke-width="0.7" fill="none"/>
+    <!-- Acupoints -->
+    <circle cx="300" cy="160" r="3.5" fill="#7A9E7E" opacity="0.7"/>
+    <circle cx="300" cy="260" r="3" fill="#7A9E7E" opacity="0.6"/>
+    <circle cx="300" cy="330" r="3" fill="#7A9E7E" opacity="0.6"/>
+    <circle cx="300" cy="420" r="3" fill="#7A9E7E" opacity="0.6"/>
+    <circle cx="300" cy="500" r="2.5" fill="#7A9E7E" opacity="0.5"/>
+    <circle cx="200" cy="400" r="2.5" fill="#A8C5A0" opacity="0.5"/>
+    <circle cx="400" cy="400" r="2.5" fill="#A8C5A0" opacity="0.5"/>
+    <circle cx="175" cy="460" r="2" fill="#C8DEC9" opacity="0.5"/>
+    <circle cx="425" cy="460" r="2" fill="#C8DEC9" opacity="0.5"/>
+    <circle cx="240" cy="555" r="2" fill="#C8DEC9" opacity="0.4"/>
+    <circle cx="360" cy="555" r="2" fill="#C8DEC9" opacity="0.4"/>
+    <!-- Needle stylization -->
+    <line x1="280" y1="140" x2="300" y2="160" stroke="#D4C4A8" stroke-width="1" opacity="0.6"/>
+    <line x1="320" y1="135" x2="300" y2="160" stroke="#D4C4A8" stroke-width="1" opacity="0.6"/>
+    <ellipse cx="300" cy="140" rx="8" ry="3" fill="#D4C4A8" opacity="0.4" transform="rotate(-15 300 140)"/>
+    <!-- Flowing energy circles -->
+    <circle cx="300" cy="350" r="120" stroke="#7A9E7E" stroke-width="0.4" fill="none" opacity="0.3" stroke-dasharray="4 8"/>
+    <circle cx="300" cy="350" r="175" stroke="#A8C5A0" stroke-width="0.3" fill="none" opacity="0.2" stroke-dasharray="3 12"/>
+    <circle cx="300" cy="350" r="235" stroke="#C8DEC9" stroke-width="0.25" fill="none" opacity="0.15" stroke-dasharray="2 16"/>
+  </svg>
+
+  <div class="hero-content">
+    <span class="hero-eyebrow">Holistic Healing · Los Angeles</span>
+    <h1 class="hero-headline">Ancient Wisdom<br>for the <em>Modern Soul.</em></h1>
+    <p class="hero-sub">Compassionate Acupuncture & Herbal Medicine — tailored to your unique rhythm, your pace of healing, your life.</p>
+    <div class="hero-actions">
+      <a href="#booking" class="btn-primary">Begin Your Journey</a>
+      <a href="#services" class="btn-ghost">
+        Explore Services
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-trust">
+    <div class="hero-trust-item">
+      <span class="trust-number">18+</span>
+      <span class="trust-label">Years Practice</span>
+    </div>
+    <div class="hero-trust-item">
+      <span class="trust-number">3k+</span>
+      <span class="trust-label">Lives Healed</span>
+    </div>
+    <div class="hero-trust-item">
+      <span class="trust-number">100%</span>
+      <span class="trust-label">Natural Medicine</span>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span class="scroll-text">Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="section-why" id="about">
+  <div class="section-header reveal">
+    <span class="eyebrow">What We Treat</span>
+    <h2 class="section-title">Three Pillars of<br><em>Complete Wellbeing</em></h2>
+  </div>
+  <div class="pillars-grid">
+    <div class="pillar-card reveal reveal-delay-1">
+      <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M24 8C24 8 12 16 12 26C12 32.627 17.373 38 24 38C30.627 38 36 32.627 36 26C36 16 24 8 24 8Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        <path d="M18 26C18 29.314 20.686 32 24 32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="24" y1="14" x2="24" y2="22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 3"/>
+      </svg>
+      <h3 class="pillar-title">Pain Management</h3>
+      <p class="pillar-body">We address the root cause of chronic pain — not merely the symptom. Acupuncture stimulates your body's innate repair systems through precisely placed needles along ancient meridian pathways.</p>
+      <ul class="pillar-points">
+        <li><strong>Chronic back & neck pain</strong> — structural relief</li>
+        <li><strong>Migraines & headaches</strong> — frequency reduction</li>
+        <li><strong>Joint & arthritis pain</strong> — anti-inflammatory</li>
+        <li><strong>Post-injury recovery</strong> — accelerated healing</li>
+      </ul>
+    </div>
+    <div class="pillar-card reveal reveal-delay-2">
+      <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="24" cy="24" r="14" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        <path d="M24 10 C24 10 30 17 24 24 C18 31 24 38 24 38" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <circle cx="24" cy="24" r="3" fill="currentColor" opacity="0.4"/>
+        <path d="M10 24 C10 24 17 18 24 24 C31 30 38 24 38 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+      </svg>
+      <h3 class="pillar-title">Stress & Anxiety Relief</h3>
+      <p class="pillar-body">The modern nervous system is under siege. Our treatments restore the body's natural equilibrium — calming the sympathetic "fight or flight" response and activating deep restorative rest.</p>
+      <ul class="pillar-points">
+        <li><strong>Anxiety & panic</strong> — nervous system regulation</li>
+        <li><strong>Insomnia</strong> — sleep quality improvement</li>
+        <li><strong>Burnout & fatigue</strong> — adrenal support</li>
+        <li><strong>Depression</strong> — mood-balancing protocols</li>
+      </ul>
+    </div>
+    <div class="pillar-card reveal reveal-delay-3">
+      <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M24 6 L28 20 L42 20 L31 29 L35 43 L24 34 L13 43 L17 29 L6 20 L20 20 Z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+        <circle cx="24" cy="24" r="5" fill="currentColor" opacity="0.25"/>
+      </svg>
+      <h3 class="pillar-title">Internal Balance</h3>
+      <p class="pillar-body">Traditional Chinese Medicine sees the body as an interconnected whole. We use herbal medicine and acupuncture to harmonize organ systems, regulate hormones, and restore your body's natural flow.</p>
+      <ul class="pillar-points">
+        <li><strong>Digestive health</strong> — IBS, bloating, gut flora</li>
+        <li><strong>Hormonal balance</strong> — fertility, menopause, cycles</li>
+        <li><strong>Immune function</strong> — seasonal & systemic support</li>
+        <li><strong>Metabolic health</strong> — energy, weight, vitality</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section class="section-philosophy" id="philosophy">
+  <div class="philosophy-bg-pattern"></div>
+  <div class="philosophy-inner">
+    <div class="philosophy-content reveal">
+      <span class="eyebrow">Our Philosophy</span>
+      <h2 class="philosophy-title">You Are Not a<br><em>Diagnosis.</em> You Are Whole.</h2>
+      <p class="philosophy-body">At Compassion Acupuncture, we believe healing is not the absence of disease — it is the presence of vitality, clarity, and deep ease in the body and mind.</p>
+      <div class="philosophy-quote">
+        <p>"The superior doctor prevents sickness; the mediocre doctor attends to impending sickness; the inferior doctor treats actual sickness."<br>— Huang Di Nei Jing, ~200 BCE</p>
+      </div>
+      <p class="philosophy-body" style="font-size:0.92rem; font-family: 'DM Sans', sans-serif; color: rgba(237,227,209,0.6); line-height: 1.8;">
+        Every session begins with deep listening. We consider your <strong style="color:var(--sand-light)">emotional landscape</strong>, constitutional patterns, lifestyle, and the subtleties that Western medicine often overlooks. Your treatment plan is never generic — it evolves with you.
+      </p>
+    </div>
+    <div class="philosophy-visual reveal reveal-delay-2">
+      <div class="phil-card">
+        <div class="phil-card-num">Qi</div>
+        <div class="phil-card-title">Vital Life Force</div>
+        <div class="phil-card-body">Acupuncture removes blockages in the flow of Qi — your body's intelligent energy — restoring the natural current of health and vitality throughout all organ systems.</div>
+      </div>
+      <div class="phil-card">
+        <div class="phil-card-num">阴阳</div>
+        <div class="phil-card-title">Yin & Yang Balance</div>
+        <div class="phil-card-body">Health is dynamic equilibrium — rest and activity, warmth and coolness, expansion and contraction — always in conversation.</div>
+      </div>
+      <div class="phil-card">
+        <div class="phil-card-num">精</div>
+        <div class="phil-card-title">Jing — Essence</div>
+        <div class="phil-card-body">We nourish your foundational constitutional essence, guarding against premature depletion from chronic stress and the demands of modern living.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section-services" id="services">
+  <div class="services-intro">
+    <div class="reveal">
+      <span class="eyebrow">What We Offer</span>
+      <h2 class="section-title">Treatments Rooted<br>in <em>Tradition</em></h2>
+    </div>
+    <p class="services-subtitle reveal reveal-delay-2">Each modality has been practiced for thousands of years. We bring them forward with precision, care, and a deep respect for the intelligence of the human body.</p>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-item reveal reveal-delay-1">
+      <div class="service-thumb service-thumb-1">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <line x1="20" y1="10" x2="20" y2="54" stroke="#7A9E7E" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="32" y1="6" x2="32" y2="58" stroke="#7A9E7E" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="44" y1="14" x2="44" y2="50" stroke="#7A9E7E" stroke-width="1.5" stroke-linecap="round"/>
+          <ellipse cx="20" cy="10" rx="3" ry="5" fill="#D4C4A8" opacity="0.7"/>
+          <ellipse cx="32" cy="6" rx="3" ry="5" fill="#D4C4A8" opacity="0.7"/>
+          <ellipse cx="44" cy="14" rx="3" ry="5" fill="#D4C4A8" opacity="0.7"/>
+        </svg>
+        <span class="service-tag">Most Popular</span>
+      </div>
+      <div class="service-body">
+        <h3 class="service-title">Classical Acupuncture</h3>
+        <p class="service-desc">Traditional needle therapy targeting meridian pathways to restore Qi flow, reduce pain, and recalibrate the body's self-healing mechanisms.</p>
+        <a href="#booking" class="service-link">Book Session →</a>
+      </div>
+    </div>
+
+    <div class="service-item reveal reveal-delay-2">
+      <div class="service-thumb service-thumb-2">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <path d="M20 44 C20 30 28 18 32 14 C36 18 44 30 44 44" stroke="#C9B48A" stroke-width="1.5" fill="none"/>
+          <path d="M26 44 C26 35 30 26 32 22 C34 26 38 35 38 44" stroke="#D4C4A8" stroke-width="1.2" fill="none" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="service-body">
+        <h3 class="service-title">Chinese Herbal Medicine</h3>
+        <p class="service-desc">Custom-formulated herbal prescriptions drawn from centuries of botanical wisdom — addressing the root pattern of imbalance, not just symptoms.</p>
+        <a href="#booking" class="service-link">Book Consultation →</a>
+      </div>
+    </div>
+
+    <div class="service-item reveal reveal-delay-3">
+      <div class="service-thumb service-thumb-3">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <circle cx="32" cy="32" r="18" stroke="#6B8E8E" stroke-width="1.5" fill="none"/>
+          <path d="M22 32 C22 26 27 22 32 22 C37 22 42 26 42 32" stroke="#9DB8B8" stroke-width="1.2" fill="none" opacity="0.8"/>
+          <circle cx="32" cy="32" r="4" fill="#9DB8B8" opacity="0.4"/>
+        </svg>
+      </div>
+      <div class="service-body">
+        <h3 class="service-title">Cupping Therapy</h3>
+        <p class="service-desc">Ancient decompression technique that releases deep fascial tension, improves circulation, and draws out stagnation from chronically tight muscles.</p>
+        <a href="#booking" class="service-link">Book Session →</a>
+      </div>
+    </div>
+
+    <div class="service-item reveal reveal-delay-1">
+      <div class="service-thumb service-thumb-4">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <path d="M16 48 Q24 32 32 28 Q40 24 48 16" stroke="#C9B48A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <circle cx="32" cy="28" r="8" stroke="#D4C4A8" stroke-width="1" fill="none" opacity="0.6"/>
+          <path d="M28 28 L32 22 L36 28 L32 34 Z" fill="#C9B48A" opacity="0.3"/>
+        </svg>
+      </div>
+      <div class="service-body">
+        <h3 class="service-title">Moxibustion</h3>
+        <p class="service-desc">Therapeutic heat treatment using dried mugwort to warm and invigorate the flow of Qi — exceptional for cold conditions, immune deficiency, and fatigue.</p>
+        <a href="#booking" class="service-link">Book Session →</a>
+      </div>
+    </div>
+
+    <div class="service-item reveal reveal-delay-2">
+      <div class="service-thumb service-thumb-5">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <path d="M20 44 C28 30 36 20 44 14" stroke="#7A9E7E" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M14 38 C22 30 30 26 38 22 C42 20 46 20 50 22" stroke="#A8C5A0" stroke-width="1.2" stroke-linecap="round" opacity="0.7" fill="none"/>
+          <circle cx="32" cy="28" r="5" fill="none" stroke="#B0C8B0" stroke-width="1" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="service-body">
+        <h3 class="service-title">Nutritional Therapy</h3>
+        <p class="service-desc">TCM-informed dietary guidance that aligns your food choices with your constitutional type, seasonal rhythms, and specific healing goals.</p>
+        <a href="#booking" class="service-link">Book Consultation →</a>
+      </div>
+    </div>
+
+    <div class="service-item reveal reveal-delay-3">
+      <div class="service-thumb service-thumb-6">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <rect x="20" y="20" width="24" height="24" rx="4" stroke="#A89880" stroke-width="1.5" fill="none"/>
+          <line x1="32" y1="14" x2="32" y2="20" stroke="#A89880" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="32" y1="44" x2="32" y2="50" stroke="#A89880" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="14" y1="32" x2="20" y2="32" stroke="#A89880" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="44" y1="32" x2="50" y2="32" stroke="#A89880" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="32" cy="32" r="4" fill="#CCC0A8" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="service-body">
+        <h3 class="service-title">Integrative Wellness Plans</h3>
+        <p class="service-desc">Comprehensive multi-modal programs combining acupuncture, herbs, lifestyle, and nutrition into a cohesive, evolving healing journey over 4–12 weeks.</p>
+        <a href="#booking" class="service-link">Learn More →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section-testimonials">
+  <div class="section-header reveal">
+    <span class="eyebrow">Patient Stories</span>
+    <h2 class="section-title">Healing Told in<br><em>Their Own Words</em></h2>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card reveal reveal-delay-1">
+      <div class="stars">
+        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+      </div>
+      <p class="testimonial-text">"After three years of chronic lower back pain and every Western treatment failing me, six sessions here changed everything. I sleep through the night for the first time in years."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">M</div>
+        <div>
+          <div class="author-name">Maria L.</div>
+          <div class="author-tag">Chronic Pain · 8 months ago</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal reveal-delay-2">
+      <div class="stars">
+        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+      </div>
+      <p class="testimonial-text">"The herbal formula she prescribed did what no antidepressant could — it lifted the fog without numbing me. I feel like myself again. Genuinely."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">D</div>
+        <div>
+          <div class="author-name">David K.</div>
+          <div class="author-tag">Anxiety & Depression · 4 months ago</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal reveal-delay-3">
+      <div class="stars">
+        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+      </div>
+      <p class="testimonial-text">"She listened to things I hadn't even said out loud yet. The whole approach — the diagnosis, the care, the follow-up — is unlike anything in conventional medicine."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">S</div>
+        <div>
+          <div class="author-name">Sarah T.</div>
+          <div class="author-tag">Hormonal Balance · 2 months ago</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section class="section-booking" id="booking">
+  <div class="booking-bg"></div>
+  <div class="booking-inner">
+    <div class="booking-content reveal">
+      <span class="eyebrow" style="color: rgba(255,255,255,0.7);">
+        <span style="display:block;width:28px;height:1px;background:rgba(255,255,255,0.5)"></span>
+        Begin Today
+      </span>
+      <h2 class="booking-title">Your Healing<br>Journey <em>Starts Here.</em></h2>
+      <p class="booking-body">The first step is simply making contact. A free 15-minute discovery call is available to discuss your concerns, answer questions, and find out if we're the right fit.</p>
+      <div class="booking-steps">
+        <div class="booking-step">
+          <div class="step-num">1</div>
+          <p class="step-text"><strong>Book a Discovery Call</strong> — free, 15 minutes, no obligation</p>
+        </div>
+        <div class="booking-step">
+          <div class="step-num">2</div>
+          <p class="step-text"><strong>Initial Intake Session</strong> — 75 min deep-dive into your health history</p>
+        </div>
+        <div class="booking-step">
+          <div class="step-num">3</div>
+          <p class="step-text"><strong>Your Personalized Protocol</strong> — treatment plan built around you</p>
+        </div>
+        <div class="booking-step">
+          <div class="step-num">4</div>
+          <p class="step-text"><strong>Ongoing Support</strong> — sessions, herbs, and guidance as you evolve</p>
+        </div>
+      </div>
+    </div>
+    <div class="booking-form-card reveal reveal-delay-2">
+      <h3 class="form-title">Request an Appointment</h3>
+      <div class="form-row">
+        <div class="form-field">
+          <label>First Name</label>
+          <input type="text" placeholder="Your name">
+        </div>
+        <div class="form-field">
+          <label>Last Name</label>
+          <input type="text" placeholder="Family name">
+        </div>
+      </div>
+      <div class="form-field">
+        <label>Email Address</label>
+        <input type="email" placeholder="your@email.com">
+      </div>
+      <div class="form-field">
+        <label>Phone Number</label>
+        <input type="tel" placeholder="(555) 000-0000">
+      </div>
+      <div class="form-field">
+        <label>Primary Concern</label>
+        <select>
+          <option value="">Select your main concern…</option>
+          <option>Chronic Pain</option>
+          <option>Stress & Anxiety</option>
+          <option>Digestive Health</option>
+          <option>Hormonal Balance</option>
+          <option>Sleep Issues</option>
+          <option>Fertility Support</option>
+          <option>General Wellness</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Anything Else?</label>
+        <textarea placeholder="Tell us a little about what you're experiencing…"></textarea>
+      </div>
+      <button class="btn-book">Request Appointment →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">Compassion <span>Acupuncture</span></a>
+      <p class="footer-tagline">"Where ancient medicine meets the modern seeker — with patience, precision, and genuine care."</p>
+      <div class="footer-contact">
+        <p>📍 1234 Serenity Blvd, Suite 204, Los Angeles, CA 90025</p>
+        <p>📞 (310) 555-0192</p>
+        <p>✉ hello@compassionacupuncture.com</p>
+        <p>⏰ Mon–Sat · 9am – 7pm</p>
+      </div>
+    </div>
+    <div>
+      <p class="footer-heading">Treatments</p>
+      <ul class="footer-links">
+        <li><a href="#">Classical Acupuncture</a></li>
+        <li><a href="#">Herbal Medicine</a></li>
+        <li><a href="#">Cupping Therapy</a></li>
+        <li><a href="#">Moxibustion</a></li>
+        <li><a href="#">Nutritional Guidance</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-heading">Conditions</p>
+      <ul class="footer-links">
+        <li><a href="#">Chronic Pain</a></li>
+        <li><a href="#">Anxiety & Stress</a></li>
+        <li><a href="#">Hormonal Health</a></li>
+        <li><a href="#">Digestive Issues</a></li>
+        <li><a href="#">Sleep & Fatigue</a></li>
+        <li><a href="#">Fertility</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-heading">Visit Us</p>
+      <ul class="footer-links">
+        <li><a href="#">About Dr. Chen</a></li>
+        <li><a href="#">New Patients</a></li>
+        <li><a href="#">Insurance & Rates</a></li>
+        <li><a href="#">Patient Portal</a></li>
+        <li><a href="#">Blog & Resources</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 Compassion Acupuncture & Herbal Medicine. All rights reserved.</p>
+    <p class="footer-copy">Privacy Policy · Terms of Service · HIPAA Notice</p>
+  </div>
+</footer>
+
+<!-- STICKY CTA -->
+<a href="#booking" class="sticky-cta" id="stickyCta">
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+    <rect x="1" y="2" width="12" height="11" rx="2" stroke="white" stroke-width="1.3"/>
+    <line x1="4" y1="1" x2="4" y2="4" stroke="white" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="10" y1="1" x2="10" y2="4" stroke="white" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="1" y1="6" x2="13" y2="6" stroke="white" stroke-width="1.3"/>
+  </svg>
+  Book Appointment
+</a>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => io.observe(el));
+
+  // Sticky CTA
+  const stickyCta = document.getElementById('stickyCta');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 500) stickyCta.classList.add('visible');
+    else stickyCta.classList.remove('visible');
+  });
+
+  // Nav compact on scroll
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80) nav.style.padding = '0.75rem 3rem';
+    else nav.style.padding = '1.1rem 3rem';
+  });
+</script>
+</body>
+</html>
