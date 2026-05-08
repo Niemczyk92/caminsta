@@ -333,10 +333,12 @@
     const ABOUT_IMG = 'pics/00304168-740d-40b3-ba7d-44c5a9470e04.jpg';
 
     const PAYMENT_LOGOS = [
-      { name: 'Visa',       src: 'logos/payment/visa.svg' },
-      { name: 'Mastercard', src: 'logos/payment/mastercard.svg' },
-      { name: 'American Express', src: 'logos/payment/amex.svg' },
-      { name: 'Discover',   src: 'logos/payment/discover.svg' },
+      { name: 'Visa',             src: 'logos/payment/visa.svg',       h: 'h-5 md:h-6' },
+      { name: 'Mastercard',       src: 'logos/payment/mastercard.svg', h: 'h-7 md:h-9' },
+      { name: 'American Express', src: 'logos/payment/amex.svg',       h: 'h-7 md:h-9' },
+      { name: 'Discover',         src: 'logos/payment/discover.svg',   h: 'h-5 md:h-6' },
+      { name: 'Apple Pay',        src: 'logos/payment/applepay.svg',   h: 'h-6 md:h-7' },
+      { name: 'Google Pay',       src: 'logos/payment/googlepay.svg',  h: 'h-5 md:h-6' },
     ];
 
     /* ============================ ICONS ============================ */
@@ -902,21 +904,25 @@
         <footer className="relative polish-motif-dark text-white pt-16 pb-8 overflow-hidden">
           <div className="relative container mx-auto px-5 md:px-10">
             {/* Payment cards strip with logos */}
-            <div className="glass-dark rounded-2xl p-5 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4 mb-12">
-              <div className="flex items-center gap-3 text-center md:text-left">
-                <div className="w-11 h-11 rounded-full bg-brand-red flex items-center justify-center flex-shrink-0">
-                  <svg viewBox="0 0 24 24" className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 11h20"/>
-                  </svg>
-                </div>
-                <span className="text-sm md:text-base font-medium tracking-wide">{L.cards}</span>
-              </div>
-              <div className="flex items-center gap-3 flex-wrap justify-center">
-                {PAYMENT_LOGOS.map((p) => (
-                  <div key={p.name} className="pay-card rounded-lg h-10 md:h-11 px-3 flex items-center" title={p.name}>
-                    <img src={p.src} alt={p.name} className="h-5 md:h-6 w-auto" />
+            <div className="glass-dark rounded-3xl p-6 md:p-7 mb-12">
+              <div className="flex flex-col lg:flex-row items-center justify-between gap-5">
+                <div className="flex items-center gap-3 text-center lg:text-left">
+                  <div className="w-12 h-12 rounded-2xl bg-brand-red flex items-center justify-center flex-shrink-0 shadow-glass">
+                    <svg viewBox="0 0 24 24" className="w-6 h-6 text-white" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 11h20"/>
+                    </svg>
                   </div>
-                ))}
+                  <span className="text-sm md:text-base font-semibold tracking-wide">{L.cards}</span>
+                </div>
+                <div className="flex items-center gap-2.5 md:gap-3 flex-wrap justify-center">
+                  {PAYMENT_LOGOS.map((p) => (
+                    <div key={p.name}
+                         title={p.name}
+                         className="bg-white rounded-xl h-12 md:h-14 w-[72px] md:w-[88px] px-3 flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.12)] hover:shadow-[0_6px_22px_rgba(0,0,0,0.18)] hover:-translate-y-0.5 transition-all duration-200">
+                      <img src={p.src} alt={p.name} className={`${p.h} w-auto object-contain`} />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
