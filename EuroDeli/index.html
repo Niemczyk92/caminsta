@@ -419,12 +419,14 @@
     /* ============================ NAVBAR ============================ */
     function Navbar({ lang, setLang, onNavClick }) {
       const L = t[lang];
+      const C = t[lang].contact;
+      const { isOpen } = useOpenStatus(C.hours);
       const [open, setOpen] = useState(false);
       const [scrolled, setScrolled] = useState(false);
 
       useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 20);
-        window.addEventListener('scroll', onScroll);
+        const onScroll = () => setScrolled(window.scrollY > 30);
+        window.addEventListener('scroll', onScroll, { passive: true });
         return () => window.removeEventListener('scroll', onScroll);
       }, []);
 
@@ -437,60 +439,102 @@
       ];
 
       return (
-        <header className={`fixed inset-x-0 top-0 z-50 transition-all ${scrolled ? 'py-2' : 'py-4'}`}>
-          <div className={`mx-3 md:mx-6 rounded-3xl ${scrolled ? 'glass-strong shadow-glass' : 'glass'} transition-all`}>
-            <div className="flex items-center justify-between px-5 md:px-8 py-3 md:py-4">
-              <a href="#top" className="flex items-center" onClick={(e) => onNavClick(e, 'top')} aria-label="EuroDeli — home">
+        <header className="fixed inset-x-0 top-0 z-50">
+          {/* Top utility bar — collapses on scroll for clean look */}
+          <div className={`overflow-hidden transition-all duration-300 bg-brand-navyDk text-white/85 ${scrolled ? 'max-h-0' : 'max-h-12'}`}>
+            <div className="max-w-[1400px] mx-auto px-5 md:px-10 h-10 flex items-center justify-between text-[11px] md:text-xs tracking-wide">
+              <div className="flex items-center gap-3 md:gap-5">
+                <span className={`inline-flex items-center gap-2 font-semibold ${isOpen ? 'text-emerald-300' : 'text-rose-300'}`}>
+                  <span className={`w-1.5 h-1.5 rounded-full ${isOpen ? 'bg-emerald-400 animate-pulse' : 'bg-rose-400'}`}></span>
+                  {isOpen ? C.openNow : (lang === 'pl' ? 'Zamknięte' : 'Closed')}
+                </span>
+                <span className="opacity-30">·</span>
+                <a href="tel:+19544250200" className="hidden sm:inline-flex items-center gap-1.5 hover:text-white transition">
+                  <Icon.Phone className="w-3 h-3" /> +1 954-425-0200
+                </a>
+                <span className="hidden md:inline opacity-30">·</span>
+                <span className="hidden md:inline-flex items-center gap-1.5 opacity-80">
+                  <Icon.Pin className="w-3 h-3" /> Deerfield Beach, FL
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <a href={SOCIAL.fb} target="_blank" rel="noreferrer" aria-label="Facebook"
+                   className="opacity-70 hover:opacity-100 hover:text-white transition">
+                  <Icon.FB className="w-3.5 h-3.5" />
+                </a>
+                <a href={SOCIAL.ig} target="_blank" rel="noreferrer" aria-label="Instagram"
+                   className="opacity-70 hover:opacity-100 hover:text-white transition">
+                  <Icon.IG className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Main navigation — full-width, premium glass */}
+          <div className={`transition-all duration-300 border-b ${scrolled ? 'bg-white/85 backdrop-blur-xl saturate-150 border-brand-navy/8 shadow-[0_4px_24px_rgba(11,23,48,0.06)]' : 'bg-white/60 backdrop-blur-md border-white/40'}`}>
+            <div className="max-w-[1400px] mx-auto px-5 md:px-10 flex items-center justify-between gap-4">
+              {/* Logo */}
+              <a href="#top" className="flex items-center flex-shrink-0" onClick={(e) => onNavClick(e, 'top')} aria-label="EuroDeli — home">
                 <img src="logo_transparent.png" alt="EuroDeli"
-                     className={`w-auto drop-shadow transition-all ${scrolled ? 'h-16 md:h-40' : 'h-20 md:h-48'}`} />
+                     className={`w-auto drop-shadow-sm transition-all duration-300 ${scrolled ? 'h-14 md:h-16 my-2' : 'h-16 md:h-20 my-3'}`} />
               </a>
 
-              <nav className="hidden lg:flex items-center gap-2">
+              {/* Center nav */}
+              <nav className="hidden lg:flex items-center gap-1">
                 {links.map(([id, label]) => (
                   <a key={id} href={`#${id}`} onClick={(e) => onNavClick(e, id)}
-                     className="relative px-4 py-2.5 rounded-xl text-base font-semibold text-brand-navy hover:text-brand-red transition group">
+                     className="relative px-4 py-2 text-[0.95rem] font-medium tracking-wide text-brand-navy/85 hover:text-brand-red transition-colors group">
                     {label}
-                    <span className="absolute left-4 right-4 bottom-1.5 h-0.5 bg-brand-red scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+                    <span className="absolute left-4 right-4 -bottom-0.5 h-[2px] bg-brand-red origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                   </a>
                 ))}
               </nav>
 
-              <div className="flex items-center gap-2 md:gap-3">
-                <div className="hidden sm:flex items-center gap-1 p-1 rounded-full bg-white/60 border border-white/80">
-                  {['en','pl'].map((c) => (
-                    <button key={c} onClick={() => setLang(c)}
-                      className={`px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wider transition ${
-                        lang === c ? 'bg-brand-red text-white shadow-glass' : 'text-brand-navy hover:text-brand-red'
-                      }`}>
-                      {c.toUpperCase()}
-                    </button>
-                  ))}
+              {/* Right cluster */}
+              <div className="flex items-center gap-3 md:gap-5 flex-shrink-0">
+                {/* Lang switcher — refined inline */}
+                <div className="hidden sm:flex items-center text-xs font-bold tracking-[0.15em]">
+                  <button onClick={() => setLang('en')}
+                    className={`transition-colors ${lang === 'en' ? 'text-brand-red' : 'text-brand-navy/40 hover:text-brand-navy'}`}>
+                    EN
+                  </button>
+                  <span className="mx-2 text-brand-navy/20">|</span>
+                  <button onClick={() => setLang('pl')}
+                    className={`transition-colors ${lang === 'pl' ? 'text-brand-red' : 'text-brand-navy/40 hover:text-brand-navy'}`}>
+                    PL
+                  </button>
                 </div>
 
+                {/* CTA */}
                 <a href="#contact" onClick={(e) => onNavClick(e, 'contact')}
-                   className="hidden md:inline-flex items-center gap-2 px-5 py-3 rounded-full bg-brand-red text-white text-base font-semibold shadow-glass hover:bg-brand-redDk transition">
-                  {L.nav.visit} <Icon.Arrow className="w-4 h-4" />
+                   className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand-red text-white text-sm font-semibold shadow-[0_6px_18px_rgba(195,38,46,0.35)] hover:bg-brand-redDk hover:shadow-[0_10px_24px_rgba(195,38,46,0.45)] transition-all group">
+                  {L.nav.visit}
+                  <Icon.Arrow className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
 
-                <button className="lg:hidden p-2.5 rounded-xl text-brand-navy hover:bg-white/60" onClick={() => setOpen((v) => !v)} aria-label="Menu">
-                  {open ? <Icon.Close className="w-7 h-7" /> : <Icon.Menu className="w-7 h-7" />}
+                <button className="lg:hidden p-2 -mr-1 rounded-lg text-brand-navy hover:bg-brand-navy/5 transition" onClick={() => setOpen((v) => !v)} aria-label="Menu">
+                  {open ? <Icon.Close className="w-6 h-6" /> : <Icon.Menu className="w-6 h-6" />}
                 </button>
               </div>
             </div>
 
+            {/* Mobile dropdown */}
             {open && (
-              <div className="lg:hidden border-t border-white/40 px-4 py-3 flex flex-col gap-1">
+              <div className="lg:hidden border-t border-brand-navy/10 px-5 py-4 flex flex-col gap-1 bg-white/95 backdrop-blur-xl">
                 {links.map(([id, label]) => (
                   <a key={id} href={`#${id}`} onClick={(e) => { onNavClick(e, id); setOpen(false); }}
-                     className="px-4 py-3 rounded-xl text-base font-semibold text-brand-navy hover:bg-white/40">{label}</a>
+                     className="px-3 py-3 rounded-lg text-base font-semibold text-brand-navy hover:bg-brand-red/5 hover:text-brand-red transition">
+                    {label}
+                  </a>
                 ))}
-                <div className="flex sm:hidden items-center gap-2 mt-3 px-2">
-                  {['en','pl'].map((c) => (
-                    <button key={c} onClick={() => setLang(c)}
-                      className={`px-4 py-2 rounded-full text-sm font-bold ${lang === c ? 'bg-brand-red text-white' : 'bg-white/60 text-brand-navy'}`}>
-                      {c.toUpperCase()}
-                    </button>
-                  ))}
+                <a href="#contact" onClick={(e) => { onNavClick(e, 'contact'); setOpen(false); }}
+                   className="md:hidden mt-2 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-brand-red text-white text-sm font-semibold">
+                  {L.nav.visit} <Icon.Arrow className="w-4 h-4" />
+                </a>
+                <div className="flex sm:hidden items-center justify-center gap-3 mt-3 pt-3 border-t border-brand-navy/10 text-xs font-bold tracking-widest">
+                  <button onClick={() => setLang('en')} className={lang === 'en' ? 'text-brand-red' : 'text-brand-navy/50'}>EN</button>
+                  <span className="text-brand-navy/20">|</span>
+                  <button onClick={() => setLang('pl')} className={lang === 'pl' ? 'text-brand-red' : 'text-brand-navy/50'}>PL</button>
                 </div>
               </div>
             )}
