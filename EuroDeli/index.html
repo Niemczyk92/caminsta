@@ -1046,11 +1046,20 @@
     }
 
     /* ============================ APP ============================ */
+    function detectBrowserLang() {
+      // Check the full preference list (navigator.languages), not just primary.
+      // Polish users often have e.g. ['en-US', 'pl-PL'] — Polish anywhere in list = show Polish.
+      const list = (navigator.languages && navigator.languages.length)
+        ? navigator.languages
+        : [navigator.language || 'en'];
+      return list.some((l) => l && l.toLowerCase().startsWith('pl')) ? 'pl' : 'en';
+    }
+
     function App() {
       const [lang, setLang] = useState(() => {
         const saved = localStorage.getItem('eurodeli_lang');
-        if (saved) return saved;
-        return (navigator.language || 'en').toLowerCase().startsWith('pl') ? 'pl' : 'en';
+        if (saved === 'en' || saved === 'pl') return saved;
+        return detectBrowserLang();
       });
 
       useEffect(() => { localStorage.setItem('eurodeli_lang', lang); document.documentElement.lang = lang; }, [lang]);
