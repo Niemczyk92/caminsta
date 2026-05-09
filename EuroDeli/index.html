@@ -457,7 +457,15 @@
                   <Icon.Pin className="w-3 h-3" /> Deerfield Beach, FL
                 </span>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
+                <div className="hidden sm:flex items-center text-[11px] font-bold tracking-[0.18em]">
+                  <button onClick={() => setLang('en')}
+                    className={`transition ${lang === 'en' ? 'text-white' : 'text-white/40 hover:text-white/80'}`}>EN</button>
+                  <span className="mx-2 text-white/25">|</span>
+                  <button onClick={() => setLang('pl')}
+                    className={`transition ${lang === 'pl' ? 'text-white' : 'text-white/40 hover:text-white/80'}`}>PL</button>
+                </div>
+                <span className="hidden sm:inline opacity-25">·</span>
                 <a href={SOCIAL.fb} target="_blank" rel="noreferrer" aria-label="Facebook"
                    className="opacity-70 hover:opacity-100 hover:text-white transition">
                   <Icon.FB className="w-3.5 h-3.5" />
@@ -470,74 +478,79 @@
             </div>
           </div>
 
-          {/* Main navigation — full-width, premium glass */}
-          <div className={`transition-all duration-300 border-b ${scrolled ? 'bg-white/85 backdrop-blur-xl saturate-150 border-brand-navy/8 shadow-[0_4px_24px_rgba(11,23,48,0.06)]' : 'bg-white/60 backdrop-blur-md border-white/40'}`}>
-            <div className="max-w-[1400px] mx-auto px-5 md:px-10 flex items-center justify-between gap-4">
-              {/* Logo */}
-              <a href="#top" className="flex items-center flex-shrink-0" onClick={(e) => onNavClick(e, 'top')} aria-label="EuroDeli — home">
-                <img src="logo_transparent.png" alt="EuroDeli"
-                     className={`w-auto drop-shadow-sm transition-all duration-300 ${scrolled ? 'h-14 md:h-16 my-2' : 'h-16 md:h-20 my-3'}`} />
-              </a>
+          {/* === Main nav — stacked on desktop (logo dominant), classic single row on mobile === */}
+          <div className={`transition-all duration-300 border-b ${scrolled ? 'bg-white/90 backdrop-blur-xl saturate-150 border-brand-navy/8 shadow-[0_4px_24px_rgba(11,23,48,0.06)]' : 'bg-white/65 backdrop-blur-md border-white/40'}`}>
+            <div className="max-w-[1400px] mx-auto px-5 md:px-10">
 
-              {/* Center nav */}
-              <nav className="hidden lg:flex items-center gap-1">
-                {links.map(([id, label]) => (
-                  <a key={id} href={`#${id}`} onClick={(e) => onNavClick(e, id)}
-                     className="relative px-4 py-2 text-[0.95rem] font-medium tracking-wide text-brand-navy/85 hover:text-brand-red transition-colors group">
-                    {label}
-                    <span className="absolute left-4 right-4 -bottom-0.5 h-[2px] bg-brand-red origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+              {/* ===== DESKTOP layout (lg+): stacked premium ===== */}
+              <div className="hidden lg:flex flex-col items-center">
+
+                {/* Logo row with decorative side rules */}
+                <div className={`flex items-center justify-center w-full transition-all duration-300 ${scrolled ? 'pt-3 pb-2' : 'pt-6 pb-4'}`}>
+                  <span className={`flex-1 h-px max-w-[260px] transition-opacity duration-300 ${scrolled ? 'opacity-0' : 'opacity-100'}`}
+                        style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(21,41,75,0.12) 60%, rgba(21,41,75,0.22) 100%)' }}></span>
+                  <a href="#top" className="px-10 flex items-center" onClick={(e) => onNavClick(e, 'top')} aria-label="EuroDeli — home">
+                    <img src="logo_transparent.png" alt="EuroDeli"
+                         className={`w-auto drop-shadow-md transition-all duration-300 ${scrolled ? 'h-14' : 'h-32 xl:h-36'}`} />
                   </a>
-                ))}
-              </nav>
-
-              {/* Right cluster */}
-              <div className="flex items-center gap-3 md:gap-5 flex-shrink-0">
-                {/* Lang switcher — refined inline */}
-                <div className="hidden sm:flex items-center text-xs font-bold tracking-[0.15em]">
-                  <button onClick={() => setLang('en')}
-                    className={`transition-colors ${lang === 'en' ? 'text-brand-red' : 'text-brand-navy/40 hover:text-brand-navy'}`}>
-                    EN
-                  </button>
-                  <span className="mx-2 text-brand-navy/20">|</span>
-                  <button onClick={() => setLang('pl')}
-                    className={`transition-colors ${lang === 'pl' ? 'text-brand-red' : 'text-brand-navy/40 hover:text-brand-navy'}`}>
-                    PL
-                  </button>
+                  <span className={`flex-1 h-px max-w-[260px] transition-opacity duration-300 ${scrolled ? 'opacity-0' : 'opacity-100'}`}
+                        style={{ background: 'linear-gradient(270deg, transparent 0%, rgba(21,41,75,0.12) 60%, rgba(21,41,75,0.22) 100%)' }}></span>
                 </div>
 
-                {/* CTA */}
-                <a href="#contact" onClick={(e) => onNavClick(e, 'contact')}
-                   className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand-red text-white text-sm font-semibold shadow-[0_6px_18px_rgba(195,38,46,0.35)] hover:bg-brand-redDk hover:shadow-[0_10px_24px_rgba(195,38,46,0.45)] transition-all group">
-                  {L.nav.visit}
-                  <Icon.Arrow className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-                </a>
+                {/* Nav row: links centered, CTA on right */}
+                <div className="w-full grid grid-cols-[1fr_auto_1fr] items-center gap-6 pb-3.5">
+                  <div></div>
+                  <nav className="flex items-center gap-1">
+                    {links.map(([id, label]) => (
+                      <a key={id} href={`#${id}`} onClick={(e) => onNavClick(e, id)}
+                         className="relative px-5 py-2 text-[0.78rem] font-bold tracking-[0.18em] uppercase text-brand-navy/80 hover:text-brand-red transition-colors group">
+                        {label}
+                        <span className="absolute left-5 right-5 -bottom-0.5 h-[2px] bg-brand-red origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                      </a>
+                    ))}
+                  </nav>
+                  <div className="flex justify-end">
+                    <a href="#contact" onClick={(e) => onNavClick(e, 'contact')}
+                       className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand-red text-white text-[0.78rem] font-bold tracking-[0.15em] uppercase shadow-[0_6px_18px_rgba(195,38,46,0.35)] hover:bg-brand-redDk hover:shadow-[0_10px_24px_rgba(195,38,46,0.45)] transition-all group">
+                      {L.nav.visit}
+                      <Icon.Arrow className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+                    </a>
+                  </div>
+                </div>
+              </div>
 
-                <button className="lg:hidden p-2 -mr-1 rounded-lg text-brand-navy hover:bg-brand-navy/5 transition" onClick={() => setOpen((v) => !v)} aria-label="Menu">
-                  {open ? <Icon.Close className="w-6 h-6" /> : <Icon.Menu className="w-6 h-6" />}
+              {/* ===== MOBILE / TABLET layout (<lg): classic single row ===== */}
+              <div className="lg:hidden flex items-center justify-between gap-4">
+                <a href="#top" className="flex items-center" onClick={(e) => onNavClick(e, 'top')} aria-label="EuroDeli — home">
+                  <img src="logo_transparent.png" alt="EuroDeli"
+                       className={`w-auto drop-shadow-sm transition-all duration-300 ${scrolled ? 'h-14 my-2' : 'h-16 my-3'}`} />
+                </a>
+                <button className="p-2 -mr-1 rounded-lg text-brand-navy hover:bg-brand-navy/5 transition" onClick={() => setOpen((v) => !v)} aria-label="Menu">
+                  {open ? <Icon.Close className="w-7 h-7" /> : <Icon.Menu className="w-7 h-7" />}
                 </button>
               </div>
-            </div>
 
-            {/* Mobile dropdown */}
-            {open && (
-              <div className="lg:hidden border-t border-brand-navy/10 px-5 py-4 flex flex-col gap-1 bg-white/95 backdrop-blur-xl">
-                {links.map(([id, label]) => (
-                  <a key={id} href={`#${id}`} onClick={(e) => { onNavClick(e, id); setOpen(false); }}
-                     className="px-3 py-3 rounded-lg text-base font-semibold text-brand-navy hover:bg-brand-red/5 hover:text-brand-red transition">
-                    {label}
+              {/* Mobile dropdown */}
+              {open && (
+                <div className="lg:hidden border-t border-brand-navy/10 -mx-5 md:-mx-10 px-5 md:px-10 py-4 flex flex-col gap-1 bg-white/95 backdrop-blur-xl">
+                  {links.map(([id, label]) => (
+                    <a key={id} href={`#${id}`} onClick={(e) => { onNavClick(e, id); setOpen(false); }}
+                       className="px-3 py-3 rounded-lg text-base font-semibold text-brand-navy hover:bg-brand-red/5 hover:text-brand-red transition">
+                      {label}
+                    </a>
+                  ))}
+                  <a href="#contact" onClick={(e) => { onNavClick(e, 'contact'); setOpen(false); }}
+                     className="mt-2 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-brand-red text-white text-sm font-bold tracking-wider uppercase">
+                    {L.nav.visit} <Icon.Arrow className="w-4 h-4" />
                   </a>
-                ))}
-                <a href="#contact" onClick={(e) => { onNavClick(e, 'contact'); setOpen(false); }}
-                   className="md:hidden mt-2 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-brand-red text-white text-sm font-semibold">
-                  {L.nav.visit} <Icon.Arrow className="w-4 h-4" />
-                </a>
-                <div className="flex sm:hidden items-center justify-center gap-3 mt-3 pt-3 border-t border-brand-navy/10 text-xs font-bold tracking-widest">
-                  <button onClick={() => setLang('en')} className={lang === 'en' ? 'text-brand-red' : 'text-brand-navy/50'}>EN</button>
-                  <span className="text-brand-navy/20">|</span>
-                  <button onClick={() => setLang('pl')} className={lang === 'pl' ? 'text-brand-red' : 'text-brand-navy/50'}>PL</button>
+                  <div className="flex items-center justify-center gap-3 mt-3 pt-3 border-t border-brand-navy/10 text-xs font-bold tracking-widest">
+                    <button onClick={() => setLang('en')} className={lang === 'en' ? 'text-brand-red' : 'text-brand-navy/50'}>EN</button>
+                    <span className="text-brand-navy/20">|</span>
+                    <button onClick={() => setLang('pl')} className={lang === 'pl' ? 'text-brand-red' : 'text-brand-navy/50'}>PL</button>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </header>
       );
@@ -549,7 +562,7 @@
       const C = t[lang].contact;
       const { isOpen } = useOpenStatus(C.hours);
       return (
-        <section id="top" className="relative min-h-[100svh] flex items-center pt-32 md:pt-36 pb-16 polish-motif overflow-hidden">
+        <section id="top" className="relative min-h-[100svh] flex items-center pt-32 md:pt-36 lg:pt-72 pb-16 polish-motif overflow-hidden">
           {/* Decorative blurred orbs — soft ambient color washes */}
           <div className="absolute -top-32 -right-32 w-[28rem] h-[28rem] rounded-full bg-brand-red/10 blur-3xl pointer-events-none"></div>
           <div className="absolute -bottom-40 -left-32 w-[32rem] h-[32rem] rounded-full bg-brand-navy/8 blur-3xl pointer-events-none"></div>
